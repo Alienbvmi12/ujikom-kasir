@@ -29,10 +29,6 @@ class Petugas_Model extends JI_Model
             $this->db->where("username", $q, "OR", "%like%", 0, 0);
             $this->db->where("email", $q, "OR", "%like%", 0, 0);
             $this->db->where("created_at", $q, "OR", "%like%", 0, 1);
-            if (strtolower($q) == "aktif" or strtolower($q) == "nonaktif") {
-                $stat = $q === "aktif" ? "1" : "0";
-                $this->db->where("status", $stat, "OR", "=", 1, 1);
-            }
         }
     }
 
@@ -46,19 +42,21 @@ class Petugas_Model extends JI_Model
         $this->db->select_as("$this->tbl_as.created_at", "created_at");
 
         $this->db->where("$this->tbl_as.role", "1", "AND", "=", 1, 1);
-        $this->__search($data->search);  
+        $this->__search($data->search);
         $this->db->order_by($this->columns[$data->column], $data->dir);
         $this->db->limit($data->start, $data->length);
         return $this->db->get();
     }
 
-    public function count(){
+    public function count()
+    {
         $this->db->select_as("COUNT(*)", "total");
         $this->db->where("role", "1", "AND", "=", 1, 1);
         return $this->db->get_first();
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $this->db->where("role", "1", "AND", "=");
         $this->db->where("id", $id, "AND", "=");
         return $this->db->delete($this->tbl);

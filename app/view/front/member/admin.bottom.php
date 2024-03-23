@@ -3,7 +3,7 @@
     let table;
     let edit_id = 0;
     $(document).ready(function() {
-        let request_url = base_url + "admin/petugas/read/";
+        let request_url = base_url + "admin/member/read/";
         table = $("#datatable").DataTable({
             serverSide: true,
             ajax: {
@@ -18,31 +18,31 @@
                     data: "id"
                 },
                 {
+                    title: "NIK",
+                    data: "nik"
+                },
+                {
                     title: "Nama",
                     data: "nama"
                 },
                 {
-                    title: "Username",
-                    data: "username"
+                    title: "No. Telepon",
+                    data: "nomor_telepon"
                 },
                 {
-                    title: "Email",
-                    data: "email"
+                    title: "Alamat",
+                    data: "alamat"
+                },
+                {
+                    title: "Tanggal Registrasi",
+                    data: "tanggal_registrasi"
                 },
                 {
                     title: "Status",
                     data: "status",
-                    render: function(data, type, row) {
-                        if (data == 0) {
-                            return "Nonaktif";
-                        } else {
-                            return "Aktif";
-                        }
+                    render: function(data, type, row){
+                        return data == "1" ? "Aktif" : "Nonaktif";
                     }
-                },
-                {
-                    title: "Dibuat Pada",
-                    data: "created_at"
                 },
                 {
                     title: "Aksi",
@@ -59,27 +59,23 @@
         if (type == 'edit') {
             const row = context.parentNode.parentNode.getElementsByTagName("td");
             edit_id = row[0].innerHTML;
-            $("#nama").val(row[1].innerHTML);
-            $("#username").val(row[2].innerHTML);
-            $("#email").val(row[3].innerHTML);
-            $("#status").val(row[4].innerHTML.toLowerCase() == "aktif" ? "1" : "0");
-            $("#password").val("");
-            $("#konfirmasi_password").val("");
+            $("#nik").val(row[1].innerHTML);
+            $("#nama").val(row[2].innerHTML);
+            $("#nomor_telepon").val(row[3].innerHTML);
+            $("#alamat").val(row[4].innerHTML);
+            $("#tanggal_registrasi").val(row[5].innerHTML);
+            $("#status").val(row[6].innerHTML.toLowerCase() == "aktif" ? "1" : "0");
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");
-            document.getElementById("password").placeholder = "Isi kolom ini untuk mengubah password";
-            document.getElementById("konfirmasi_password").placeholder = "Isi kolom ini untuk mengubah password";
         } else {
+            $("#nik").val("");
             $("#nama").val("");
-            $("#username").val("");
-            $("#email").val("");
+            $("#nomor_telepon").val("");
+            $("#alamat").val("");
+            $("#tanggal_registrasi").val("");
             $("#status").val("1");
-            $("#password").val("");
-            $("#konfirmasi_password").val("");
             document.getElementById("submit").setAttribute("onclick", "create()");
             $("#modalTitle").html("Tambah Data");
-            document.getElementById("password").placeholder = "";
-            document.getElementById("konfirmasi_password").placeholder = "";
         }
     }
 
@@ -88,7 +84,7 @@
         const formData = new FormData(form)
         $.ajax({
             type: "post",
-            url: base_url + "admin/petugas/create",
+            url: base_url + "admin/member/create",
             data: formData,
             contentType: false,
             processData: false,
@@ -116,7 +112,7 @@
         }).then(function(result) {
             if (result.isConfirmed) {
                 const id = context.parentNode.parentNode.getElementsByTagName("td")[0].innerHTML;
-                $.post(base_url + "admin/petugas/delete/" + id + "/")
+                $.post(base_url + "admin/member/delete/" + id + "/")
                     .done(function(response) {
                         if (response.status == 200) {
                             toastr.success("<b>Berhasil</b> <br> " + response.message);
@@ -129,7 +125,7 @@
                         table.ajax.reload();
                     });
             }
-        })
+        })                       
     }
 
     function editM() {
@@ -138,7 +134,7 @@
         formData.append("id", edit_id);
         $.ajax({
             type: "post",
-            url: base_url + "admin/petugas/edit",
+            url: base_url + "admin/member/edit",
             data: formData,
             contentType: false,
             processData: false,

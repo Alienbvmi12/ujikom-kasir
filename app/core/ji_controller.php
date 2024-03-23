@@ -631,4 +631,18 @@ class JI_Controller extends SENE_Controller
         return (isset($this->getKey()->user->id)) ? true : false;      
     }
 
+    public function is_admin(){
+        if(isset($this->getKey()->user->id)){
+            $user = $this->getKey()->user;
+            if(isset($user->role)){
+                return $user->role == 0;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
+    }
 }

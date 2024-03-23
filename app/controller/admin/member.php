@@ -17,8 +17,8 @@ class Member extends JI_Controller
             redir(base_url());
         }
 
-        $this->putJsReady("member/home.bottom", $data);
-        $this->putThemeContent("member/home", $data);
+        $this->putJsReady("member/admin.bottom", $data);
+        $this->putThemeContent("member/admin", $data);
         $this->loadLayout("col-1", $data);
         $this->render();
     }
@@ -54,7 +54,9 @@ class Member extends JI_Controller
             "nik" => ['required', 'min:16', 'max:20', "unique"],
             "nama" => ['required', 'max:255'],
             "nomor_telepon" => ['required', 'min:10', 'max:15'],
-            "alamat" => ['required', 'min:3']
+            "alamat" => ['required', 'min:3'],
+            "tanggal_registrasi" => ['required', "max:10"],
+            "status" => ['required', "max:1"]
         ]);
 
         if (!$vald["result"]) {
@@ -63,9 +65,6 @@ class Member extends JI_Controller
             $this->message = $vald["message"];
             $this->__json_out([]);
         }
-
-        $req["tanggal_registrasi"] = date("Y-m-d");
-        $req["status"] = "1";
 
         try {
             $this->mm->set($req);
@@ -94,7 +93,9 @@ class Member extends JI_Controller
             "nik" => ['required', 'min:16', 'max:20', "unique"],
             "nama" => ['required', 'max:255'],
             "nomor_telepon" => ['required', 'min:10', 'max:15'],
-            "alamat" => ['required', 'min:3']
+            "alamat" => ['required', 'min:3'],
+            "tanggal_registrasi" => ['required', "max:10"],
+            "status" => ['required', "max:1"]
         ]);
 
         if (!$vald["result"]) {
@@ -103,9 +104,6 @@ class Member extends JI_Controller
             $this->message = $vald["message"];
             $this->__json_out([]);
         }
-
-        $req["tanggal_registrasi"] = date("Y-m-d");
-        $req["status"] = "1";
 
         try {
             $this->mm->update($req["id"], $req);
@@ -121,18 +119,14 @@ class Member extends JI_Controller
         }
     }
 
-    public function inactivate($id)
+    public function delete($id)
     {
         $data = $this->__init();
-        if (!$this->is_login()) {
+        if (!$this->is_login() and !$this->is_admin()) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
             $this->__json_out([]);
-        }
-
-        if (!$this->is_admin()) {
-            redir(base_url("admin/member"));
         }
 
         if ($id == "" or $id == "0" or $id == null) {
@@ -143,45 +137,10 @@ class Member extends JI_Controller
         }
 
         try {
-            $this->mm->update($id, ["status" => "0"]);
+            $this->mm->del($id);
             http_response_code(200);
             $this->status = 200;
-            $this->message = "Menonaktifkan member berhasil!!";
-            $this->__json_out([]);
-        } catch (Exception $e) {
-            http_response_code(500);
-            $this->status = 500;
-            $this->message = "Internal server error";
-            $this->__json_out([]);
-        }
-    }
-
-    public function activate($id)
-    {
-        $data = $this->__init();
-        if (!$this->is_login()) {
-            http_response_code(401);
-            $this->status = 401;
-            $this->message = "Unauthorized";
-            $this->__json_out([]);
-        }
-
-        if (!$this->is_admin()) {
-            redir(base_url("admin/member"));
-        }
-
-        if ($id == "" or $id == "0" or $id == null) {
-            http_response_code(422);
-            $this->status = 422;
-            $this->message = "ID Undefined";
-            $this->__json_out([]);
-        }
-
-        try {
-            $this->mm->update($id, ["status" => "1"]);
-            http_response_code(200);
-            $this->status = 200;
-            $this->message = "Mengaktifkan member berhasil!!";
+            $this->message = "Hapus data berhasil!!";
             $this->__json_out([]);
         } catch (Exception $e) {
             http_response_code(500);
