@@ -20,7 +20,7 @@
                 {
                     title: "Diskon",
                     data: "diskon",
-                    render: function(data, type, row){
+                    render: function(data, type, row) {
                         return data + "5";
                     }
                 },
@@ -29,23 +29,20 @@
                     data: "deskripsi"
                 },
                 {
-                    title: "No. Telepon",
-                    data: "nomor_telepon"
+                    title: "Tipe",
+                    data: "type"
                 },
                 {
-                    title: "Alamat",
-                    data: "alamat"
+                    title: "Produk",
+                    data: "nama_produk"
                 },
                 {
-                    title: "Tanggal Registrasi",
-                    data: "tanggal_registrasi"
+                    title: "Minimum Transaksi",
+                    data: "minimum_transaksi"
                 },
                 {
-                    title: "Status",
-                    data: "status",
-                    render: function(data, type, row){
-                        return data == "1" ? "Aktif" : "Nonaktif";
-                    }
+                    title: "Tanggal Kadaluarsa",
+                    data: "expired_date"
                 },
                 {
                     title: "Aksi",
@@ -55,28 +52,52 @@
                                     `
                 }
             ]
-        })
+        });
+
+        $("#produk_id").select2({
+            dropdownParent: $("#modal"),
+            ajax: {
+                url: base_url + "admin/diskon/search/",
+                dataType: "json",
+                processResults: function(data) {
+                    return {
+                        results: data.data
+                    };
+                }
+            }
+        });
+
+        document.getElementById("type").addEventListener("change", () => {
+            const val = document.getElementById("type").value;
+            $("#minimum-transaksi-container").removeClass("d-none");
+            $("#produk-id-container").removeClass("d-none");
+            if (val == "0") {
+                $("#minimum-transaksi-container").addClass("d-none");
+            } else {
+                $("#produk-id-container").addClass("d-none");
+            }
+        });
     });
 
     function modal(type, context) {
         if (type == 'edit') {
             const row = context.parentNode.parentNode.getElementsByTagName("td");
             edit_id = row[0].innerHTML;
-            $("#nik").val(row[1].innerHTML);
-            $("#nama").val(row[2].innerHTML);
-            $("#nomor_telepon").val(row[3].innerHTML);
-            $("#alamat").val(row[4].innerHTML);
-            $("#tanggal_registrasi").val(row[5].innerHTML);
-            $("#status").val(row[6].innerHTML.toLowerCase() == "aktif" ? "1" : "0");
+            $("#diskon").val(row[1].innerHTML);
+            $("#deskripsi").val(row[2].innerHTML);
+            $("#type").val(row[3].innerHTML);
+            $("#produk_id").val(row[4].innerHTML);
+            $("#minimum_transaksi").val(row[5].innerHTML);
+            $("#expired_date").val(row[6].innerHTML);
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");
         } else {
-            $("#nik").val("");
-            $("#nama").val("");
-            $("#nomor_telepon").val("");
-            $("#alamat").val("");
-            $("#tanggal_registrasi").val("");
-            $("#status").val("1");
+            $("#diskon").val("");
+            $("#deskripsi").val("");
+            $("#type").val("");
+            $("#produk_id").val("");
+            $("#minimum_transaksi").val("");
+            $("#expired_date").val("");
             document.getElementById("submit").setAttribute("onclick", "create()");
             $("#modalTitle").html("Tambah Data");
         }
@@ -128,7 +149,7 @@
                         table.ajax.reload();
                     });
             }
-        })                       
+        })
     }
 
     function editM() {

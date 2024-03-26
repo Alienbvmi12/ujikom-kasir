@@ -28,33 +28,36 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Nik</label>
-                                    <input type="text" class="form-control" name="nik" id="nik" />
+                                    <label for="" class="form-label">Diskon (%)</label>
+                                    <input type="number" class="form-control" name="diskon" id="diskon" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" name="nama" id="nama" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">No. Telepon</label>
-                                    <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon" placeholder="Format: 08xxxxx" />
+                                    <label for="" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" name="deskripsi" id="deskripsi" style="height:100px"></textarea>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Tanggal Registrasi</label>
-                                    <input type="date" class="form-control" name="tanggal_registrasi" id="tanggal_registrasi" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Status</label>
-                                    <select class="form-control" style="width: 100%" name="status" id="status">
-                                        <option value="1" selected>Aktif</option>
-                                        <option value="0">Nonaktif</option>
+                                    <label for="" class="form-label">Tipe Diskon</label>
+                                    <select class="form-select" name="type" id="type">
+                                        <option selected disabled value="">--Pilih Tipe--</option>
+                                        <option value="0">Diskon Produk</option>
+                                        <option value="1">Diskon Transaksi Member</option>
                                     </select>
                                 </div>
+                                <div class="mb-3 d-none" id="produk-id-container">
+                                    <label for="" class="form-label">Produk</label>
+                                    <select class="form-select" style="width: 100%" name="produk_id" id="produk_id">
+                                        <option selected disabled value="">--Pilih Produk--</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 d-none" id="minimum-transaksi-container">
+                                    <label for="" class="form-label">Minimum Transaksi</label>
+                                    <input class="form-control" type="number" name="minimum_transaksi" id="minimum_transaksi">
+                                </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Alamat</label>
-                                    <textarea class="form-control" name="alamat" id="alamat"></textarea>
+                                    <label for="" class="form-label">Tanggal Kadaluarsa</label>
+                                    <input class="form-control" type="date" name="expired_date" id="expired_date">
                                 </div>
                             </div>
                         </div>

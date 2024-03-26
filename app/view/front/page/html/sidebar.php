@@ -20,7 +20,7 @@
         <a class="nav-link text-secondary <?= $active === 'produk' ? 'text-dark' : '' ?>" href="<?= base_url() ?>produk"><i class="fa-solid fa-boxes-stacked"></i> Kelola Produk</a>
         <?php if (isset($sess->user->role)) {
             if ($sess->user->role == 0) { ?>
-                <a class="nav-link text-secondary <?= $active === 'diskon' ? 'text-dark' : '' ?>" href="<?= base_url() ?>diskon"><i class="fa-solid fa-tag"></i> Kelola Diskon</a>
+                <a class="nav-link text-secondary <?= $active === 'diskon' ? 'text-dark' : '' ?>" href="<?= base_url() ?>admin/diskon"><i class="fa-solid fa-tag"></i> Kelola Diskon</a>
         <?php }
         } ?>
         <a class="nav-link text-secondary <?= $active === 'transaksi' ? 'text-dark' : '' ?>" href="<?= base_url() ?>transaksi"><i class="fa-solid fa-cash-register"></i> Transaksi</a>

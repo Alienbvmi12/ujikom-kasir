@@ -34,13 +34,13 @@ class Diskon_Model extends JI_Model{
     }
 
     public function read(stdClass $data){
-        $this->db->select_as("$this->tbl.id", "id");
-        $this->db->select_as("$this->tbl.diskon", "diskon");
-        $this->db->select_as("$this->tbl.deskripsi", "deskripsi");
-        $this->db->select_as("$this->tbl.type", "type");
-        $this->db->select_as("$this->tbl2.nama_produk", "nama_produk");
-        $this->db->select_as("$this->tbl.minimum_transaksi", "minimum_transaksi");
-        $this->db->select_as("$this->tbl.expired_date", "expired_date");
+        $this->db->select_as("$this->tbl_as.id", "id");
+        $this->db->select_as("$this->tbl_as.diskon", "diskon");
+        $this->db->select_as("$this->tbl_as.deskripsi", "deskripsi");
+        $this->db->select_as("$this->tbl_as.type", "type");
+        $this->db->select_as("$this->tbl2_as.nama_produk", "nama_produk");
+        $this->db->select_as("$this->tbl_as.minimum_transaksi", "minimum_transaksi");
+        $this->db->select_as("$this->tbl_as.expired_date", "expired_date");
 
         $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "produk_id", "left");
 
@@ -54,5 +54,4 @@ class Diskon_Model extends JI_Model{
         $this->db->select_as("COUNT(*)", "total");
         return $this->db->get_first();
     }
-
 }

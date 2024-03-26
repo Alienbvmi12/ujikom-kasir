@@ -6,6 +6,8 @@ class Diskon extends JI_Controller
     {
         parent::__construct();
         $this->load("diskon_model", "dm");
+        $this->load("produk_model", "prm");
+        $this->lib("sene_json_engine", "sene_json");
     }
 
     public function index()
@@ -21,6 +23,22 @@ class Diskon extends JI_Controller
         $this->putThemeContent("diskon/home", $data);
         $this->loadLayout("col-1", $data);
         $this->render();
+    }
+
+    public function search()
+    {
+        $data = $this->__init();
+        if (!$this->is_login() or !$this->is_admin()) {
+            redir(base_url());
+        }
+
+        $q = $_GET["q"] ?? "";
+        $res = $this->prm->src($q);
+
+        http_response_code(200);
+        $this->status = 200;
+        $this->message = "Data retrivied";
+        $this->__json_out($res);
     }
 
     public function read()
@@ -123,10 +141,12 @@ class Diskon extends JI_Controller
             $vald = $this->dm->validate($req, "update", [
                 "produk_id" => ['required', 'max:7', "as: Produk"]
             ]);
+            $req["minimum_transaksi"] = NULL;
         } else {
             $vald = $this->dm->validate($req, "update", [
                 "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
             ]);
+            $req["produk_id"] = NULL;
         }
 
         if (!$vald["result"]) {
