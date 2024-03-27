@@ -21,7 +21,7 @@
                     title: "Diskon",
                     data: "diskon",
                     render: function(data, type, row) {
-                        return data + "5";
+                        return data + "%";
                     }
                 },
                 {
@@ -30,15 +30,36 @@
                 },
                 {
                     title: "Tipe",
-                    data: "type"
+                    data: "type",
+                    render: function(data, type, row) {
+                        if (data == "0") {
+                            return "Produk"
+                        } else if (data == "1") {
+                            return "Transaksi"
+                        }
+                    }
                 },
                 {
                     title: "Produk",
-                    data: "nama_produk"
+                    data: "nama_produk",
+                    render: function(data, type, row) {
+                        if (data == null) {
+                            return "-"
+                        } else {
+                            return data
+                        }
+                    }
                 },
                 {
                     title: "Minimum Transaksi",
-                    data: "minimum_transaksi"
+                    data: "minimum_transaksi",
+                    render: function(data, type, row) {
+                        if (data == null) {
+                            return "-"
+                        } else {
+                            return "Rp." + $.number(data, 2, ",", ".");
+                        }
+                    }
                 },
                 {
                     title: "Tanggal Kadaluarsa",
@@ -55,6 +76,7 @@
         });
 
         $("#produk_id").select2({
+            theme: "bootstrap-5",
             dropdownParent: $("#modal"),
             ajax: {
                 url: base_url + "admin/diskon/search/",
@@ -83,12 +105,58 @@
         if (type == 'edit') {
             const row = context.parentNode.parentNode.getElementsByTagName("td");
             edit_id = row[0].innerHTML;
-            $("#diskon").val(row[1].innerHTML);
+            $("#diskon").val(row[1].innerHTML.replaceAll("%", ""));
             $("#deskripsi").val(row[2].innerHTML);
-            $("#type").val(row[3].innerHTML);
-            $("#produk_id").val(row[4].innerHTML);
-            $("#minimum_transaksi").val(row[5].innerHTML);
+            $("#type").val(row[3].innerHTML.toLowerCase() == "produk" ? "0" : "1");
+            $("#minimum_transaksi").val(row[5].innerHTML != "-" ? row[5].innerHTML.replaceAll("Rp.", "").replaceAll(".", "").replaceAll(",", ".") : "0");
             $("#expired_date").val(row[6].innerHTML);
+
+            const typee = row[3].innerHTML.toLowerCase() == "produk" ? "0" : "1";
+            $("#minimum-transaksi-container").removeClass("d-none");
+            $("#produk-id-container").removeClass("d-none");
+            if (typee == "0") {
+                $("#minimum-transaksi-container").addClass("d-none");
+
+                let $newOption = $("<option selected='selected'></option>")
+                    .val(row[4].innerHTML.split("-")[0])
+                    .text(row[4].innerHTML);
+                $("#produk_id").append($newOption).trigger('change');
+
+            } else {
+                $("#produk-id-container").addClass("d-none");
+            }
+
+            // $.ajax({
+            //     url: base_url + "admin/diskon/get_by_id/" + edit_id,
+            //     method: "GET",
+            //     processData: false,
+            //     contentType: false,
+            //     success: function(res) {
+            //         $("#diskon").val(res.data.diskon);
+            //         $("#deskripsi").val(res.data.deskripsi);
+            //         $("#type").val(res.data.type);
+            //         $("#minimum_transaksi").val(res.data.minimum_transaksi ?? "");
+            //         $("#expired_date").val(res.data.expired_date);
+
+            //         const val = document.getElementById("type").value;
+            //         $("#minimum-transaksi-container").removeClass("d-none");
+            //         $("#produk-id-container").removeClass("d-none");
+            //         if (val == "0") {
+            //             $("#minimum-transaksi-container").addClass("d-none");
+
+            //             let $newOption = $("<option selected='selected'></option>")
+            //                 .val(res.data.produk_id)
+            //                 .text(row[4].innerHTML);
+            //             $("#produk_id").append($newOption).trigger('change');
+
+            //         } else {
+            //             $("#produk-id-container").addClass("d-none");
+            //         }
+            //     },
+            //     fail: function(xhr) {
+            //         toastr.danger(xhr.responseJSON.message)
+            //     }
+            // })
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");
         } else {

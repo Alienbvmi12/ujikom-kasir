@@ -4,6 +4,7 @@
     </div>
     <div class="card-body">
         <h4 class="card-title">Kelola Diskon</h4>
+        <small class="text-secondary">Ketika transaksi, diskon akan dipilih otomatis oleh sistem berdasarkan tanggal kadaluarsanya. Voucher yang akan kadaluarsa lebih awal yang akan digunakan</small>
         <button class="btn btn-success my-3" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('create')">Buat Baru</button>
         <div class="table-responsive">
             <table id="datatable" class="table table-striped table-hover table-borderless table-primary align-middle">
@@ -29,7 +30,7 @@
                             <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Diskon (%)</label>
-                                    <input type="number" class="form-control" name="diskon" id="diskon" />
+                                    <input type="number" class="form-control" name="diskon" id="diskon" min="0" max="100" onchange="if(this.value > 100) this.value = 100; if(this.value < 0) this.value = 0;"/>
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Deskripsi</label>

@@ -6,5 +6,5 @@
   "<link href=\"{{base_url}}skin/libs/nprogress/nprogress.css\" rel=\"stylesheet\" />",
   "<link href=\"{{base_url}}skin/libs/fontawesome/css/all.min.css\" rel=\"stylesheet\" />",
   "<link href=\"{{base_url}}skin/libs/select2/dist/css/select2.min.css\" rel=\"stylesheet\" />",
-  "<link href=\"{{base_url}}skin/css/style.css\" rel=\"stylesheet\" />"
+  "<link href=\"{{base_url}}skin/libs/select2-bootstrap/select2-bootstrap-5-theme.min.css\" rel=\"stylesheet\" />"
 ]

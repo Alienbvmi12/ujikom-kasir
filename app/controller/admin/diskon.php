@@ -15,7 +15,7 @@ class Diskon extends JI_Controller
         $data = $this->__init();
         $data["active"] = "diskon";
 
-        if (!$this->is_login()) {
+        if (!$this->is_login() or !$this->is_admin()) {
             redir(base_url());
         }
 
@@ -86,10 +86,12 @@ class Diskon extends JI_Controller
             $vald = $this->dm->validate($req, "insert", [
                 "produk_id" => ['required', 'max:7', "as: Produk"]
             ]);
+            unset($req["minimum_transaksi"]);
         } else {
             $vald = $this->dm->validate($req, "insert", [
-                "minimum_transaksi" => ['required', 'max:13']
+                "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
             ]);
+            unset($req["produk_id"]);
         }
 
         if (!$vald["result"]) {
@@ -141,12 +143,12 @@ class Diskon extends JI_Controller
             $vald = $this->dm->validate($req, "update", [
                 "produk_id" => ['required', 'max:7', "as: Produk"]
             ]);
-            $req["minimum_transaksi"] = NULL;
+            unset($req["minimum_transaksi"]);
         } else {
             $vald = $this->dm->validate($req, "update", [
                 "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
             ]);
-            $req["produk_id"] = NULL;
+            unset($req["produk_id"]);
         }
 
         if (!$vald["result"]) {
@@ -199,5 +201,30 @@ class Diskon extends JI_Controller
             $this->message = "Internal server error";
             $this->__json_out([]);
         }
+    }
+
+    public function get_by_id($id)
+    {
+        $data = $this->__init();
+        if (!$this->is_login() and !$this->is_admin()) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
+        }
+
+        if ($id == "" or $id == "0" or $id == null) {
+            http_response_code(422);
+            $this->status = 422;
+            $this->message = "ID Undefined";
+            $this->__json_out([]);
+        }
+
+        $res = $this->dm->id($id);
+
+        http_response_code(200);
+        $this->status = 200;
+        $this->message = "Data retrivied successfully";
+        $this->__json_out($res);
     }
 }

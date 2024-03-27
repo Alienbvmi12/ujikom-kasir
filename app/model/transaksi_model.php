@@ -1,6 +1,6 @@
 <?php
 
-class Diskon_Model extends JI_Model{
+class Transaksi_Model extends JI_Model{
     public $tbl = "diskon";
     public $tbl_as = "dsc";
     public $tbl2 = "produk";
