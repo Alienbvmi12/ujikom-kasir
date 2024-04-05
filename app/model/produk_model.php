@@ -57,4 +57,13 @@ class Produk_Model extends JI_Model
         $this->db->limit("0", "15");
         return $this->db->get();
     }
+
+    public function src_trans($q = "")
+    {
+        $this->db->select_as("CONCAT($this->tbl_as.id, '|', $this->tbl_as.harga)", "id");
+        $this->db->select_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama_produk)", "text");
+        $this->db->where_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama_produk)", $q, "AND", "%like%", 0, 0);
+        $this->db->limit("0", "15");
+        return $this->db->get();
+    }
 }

@@ -13,7 +13,7 @@
                 <a class="nav-link text-secondary <?= $active === 'member' ? 'text-dark' : '' ?>" href="<?= base_url() ?>admin/member"><i class="fa-solid fa-address-card"></i> Kelola Member</a>
             <?php } else {
             ?>
-                <a class="nav-link text-secondary <?= $active === 'member' ? 'text-dark' : '' ?>" href="<?= base_url() ?>member"><i class="fa-solid fa-address-card"></i> Kelola Member</a>
+                <a class="nav-link text-secondary <?= $active === 'member' ? 'text-dark' : '' ?>" href="<?= base_url() ?>petugas/member"><i class="fa-solid fa-address-card"></i> Kelola Member</a>
         <?php
             }
         } ?>

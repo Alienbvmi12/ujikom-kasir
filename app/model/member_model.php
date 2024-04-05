@@ -41,4 +41,12 @@ class Member_Model extends JI_Model{
         $this->db->select_as("COUNT(*)", "total");
         return $this->db->get_first();
     }
+
+    public function src($q){
+        $this->db->select_as("$this->tbl_as.id", "id");
+        $this->db->select_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama)", "text");
+        $this->db->where_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama)", $q, "AND", "%like%");
+        $this->db->limit("0", "15");
+        return $this->db->get();
+    }
 }

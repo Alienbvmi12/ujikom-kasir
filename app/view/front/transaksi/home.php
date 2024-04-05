@@ -10,23 +10,23 @@
                             <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Produk</label>
-                                    <select class="form-select" name="produk_id" id="produk_id">
+                                    <select class="form-select" name="produk_id" id="produk_id" onchange="showHarga(this)">
                                         <option selected disabled>--Pilih Produk--</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Harga Satuan (Rp.)</label>
-                                    <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                    <label for="" class="form-label">Harga Satuan</label>
+                                    <input type="text" disabled class="form-control" name="harga_satuan" id="harga_satuan" />
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Kuantitas</label>
-                                    <input type="number" class="form-control" name="qty" id="qty" />
+                                    <input type="number" class="form-control" name="qty" id="qty" oninput="countSubtotal(this)" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Harga Satuan (Rp.)</label>
-                                    <input type="number" disabled readonly class="form-control" name="subtotal" id="subtotal" />
+                                    <label for="" class="form-label">Subtotal</label>
+                                    <input type="text" disabled class="form-control" name="subtotal" id="subtotal" />
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <button type="button" name="tambah_keranjang" id="tambah_keranjang" class="btn btn-primary">
@@ -36,36 +36,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive mt-4">
-                        <table class="table table-striped table-hover table-borderless table-primary align-middle">
-                            <thead class="table-light">
-                                <caption>
-                                    Table Name
-                                </caption>
-                                <tr>
-                                    <th>Column 1</th>
-                                    <th>Column 2</th>
-                                    <th>Column 3</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                <tr class="table-primary">
-                                    <td scope="row">Item</td>
-                                    <td>Item</td>
-                                    <td>Item</td>
-                                </tr>
-                                <tr class="table-primary">
-                                    <td scope="row">Item</td>
-                                    <td>Item</td>
-                                    <td>Item</td>
-                                </tr>
-                            </tbody>
-                            <tfoot>
-
-                            </tfoot>
-                        </table>
-                    </div>
-
                 </div>
                 <div class="col-sm-4">
                     <div class="card w-100">
@@ -79,6 +49,64 @@
                                 <select class="form-select" name="member_id" id="member_id">
                                     <option selected disabled>--Pilih Member--</option>
                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="table-responsive mt-4">
+                        <table id="keranjang" class="table table-striped table-hover table-borderless table-primary align-middle w-100">
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card w-100 mt-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Subtotal</label>
+                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Diskon</label>
+                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Total</label>
+                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Bayar</label>
+                                        <input type="number" class="form-control" name="harga_satuan" id="harga_satuan" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Kembalian</label>
+                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 d-flex justify-content-end">
+                                    <button id="transaksi-baru" class="btn btn-warning">Transaksi Baru</button>
+                                    <button id="checkout" class="btn btn-success mx-2">Checkout</button>
+                                </div>
                             </div>
                         </div>
                     </div>

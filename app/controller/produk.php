@@ -11,7 +11,7 @@ class Produk extends JI_Controller
     public function index()
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
+        if (!$this->is_login()) {
             redir(base_url());
         }
 

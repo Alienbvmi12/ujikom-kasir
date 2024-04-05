@@ -54,4 +54,20 @@ class Diskon_Model extends JI_Model{
         $this->db->select_as("COUNT(*)", "total");
         return $this->db->get_first();
     }
+
+    public function src_produk($q){
+        $this->db->select_as("$this->tbl_as.id", "id");
+        $this->db->select_as("$this->tbl_as.diskon", "diskon");
+        $this->db->where_as("$this->tbl_as.produk_id", $q, "AND", "=");
+        $this->db->order_by("$this->tbl_as.expired_date", "asc");
+        return $this->db->get_first();
+    }
+
+    public function src_member($q){
+        $this->db->select_as("$this->tbl_as.id", "id");
+        $this->db->select_as("$this->tbl_as.diskon", "diskon");
+        $this->db->where_as("$this->tbl_as.minimum_transaksi", $q, "<=", "=");
+        $this->db->order_by("$this->tbl_as.minimum_transaksi", "desc");
+        return $this->db->get_first();
+    }
 }

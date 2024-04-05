@@ -3,7 +3,7 @@
     let table;
     let edit_id = 0;
     $(document).ready(function() {
-        let request_url = base_url + "member/read/";
+        let request_url = base_url + "petugas/member/read/";
         table = $("#datatable").DataTable({
             serverSide: true,
             ajax: {
@@ -93,7 +93,7 @@
         const formData = new FormData(form)
         $.ajax({
             type: "post",
-            url: base_url + "member/create",
+            url: base_url + "petugas/member/create",
             data: formData,
             contentType: false,
             processData: false,
@@ -121,7 +121,7 @@
         }).then(function(result) {
             if (result.isConfirmed) {
                 const id = context.parentNode.parentNode.getElementsByTagName("td")[0].innerHTML;
-                $.post(base_url + "member/"+ (status == 1 ? "activate" : "inactivate") +"/" + id + "/")
+                $.post(base_url + "petugas/member/"+ (status == 1 ? "activate" : "inactivate") +"/" + id + "/")
                     .done(function(response) {
                         if (response.status == 200) {
                             toastr.success("<b>Berhasil</b> <br> " + response.message);
@@ -143,7 +143,7 @@
         formData.append("id", edit_id);
         $.ajax({
             type: "post",
-            url: base_url + "member/edit",
+            url: base_url + "petugas/member/edit",
             data: formData,
             contentType: false,
             processData: false,

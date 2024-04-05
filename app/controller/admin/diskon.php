@@ -28,8 +28,11 @@ class Diskon extends JI_Controller
     public function search()
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->is_login() AND !$this->is_admin()) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $q = $_GET["q"] ?? "";
@@ -44,8 +47,11 @@ class Diskon extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->is_login() AND !$this->is_admin()) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $req = $this->__datatablesRequest();
@@ -64,8 +70,11 @@ class Diskon extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->is_login() AND !$this->is_admin()) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $vald = $this->dm->validate($req, "insert", [
@@ -120,8 +129,11 @@ class Diskon extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->is_login() AND !$this->is_admin()) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $vald = $this->dm->validate($req, "update", [
