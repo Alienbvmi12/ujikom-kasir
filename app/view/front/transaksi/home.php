@@ -22,14 +22,14 @@
                             <div class="col-sm-6">
                                 <div class="mb-3">
                                     <label for="" class="form-label">Kuantitas</label>
-                                    <input type="number" class="form-control" name="qty" id="qty" oninput="countSubtotal(this)" />
+                                    <input type="number" class="form-control" name="qty" id="qty" oninput="countSubtotalRow(this)" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Subtotal</label>
                                     <input type="text" disabled class="form-control" name="subtotal" id="subtotal" />
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" name="tambah_keranjang" id="tambah_keranjang" class="btn btn-primary">
+                                    <button type="button" name="tambah_keranjang" id="tambah_keranjang" onclick="addToCart();" class="btn btn-primary">
                                         Tambahkan ke Keranjang
                                     </button>
                                 </div>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Member (Opsional)</label>
-                                <select class="form-select" name="member_id" id="member_id">
+                                <select class="form-select" name="member_id" id="member_id" onchange="setMember(this)">
                                     <option selected disabled>--Pilih Member--</option>
                                 </select>
                             </div>
@@ -70,13 +70,13 @@
                                 <div class="col-sm-6">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Subtotal</label>
-                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                        <input type="text" disabled readonly class="form-control" name="subtotal_trans" id="subtotal_trans" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Diskon</label>
-                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                        <input type="text" disabled readonly class="form-control" name="diskon" id="diskon" />
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                 <div class="col-sm-12">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Total</label>
-                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                        <input type="text" disabled readonly class="form-control" name="total" id="total" />
                                     </div>
                                 </div>
                             </div>
@@ -92,20 +92,20 @@
                                 <div class="col-sm-6">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Bayar</label>
-                                        <input type="number" class="form-control" name="harga_satuan" id="harga_satuan" />
+                                        <input type="number" class="form-control" name="bayar" id="bayar" oninput="countKembalian()" />
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="mb-3">
                                         <label for="" class="form-label">Kembalian</label>
-                                        <input type="number" disabled readonly class="form-control" name="harga_satuan" id="harga_satuan" />
+                                        <input type="text" disabled readonly class="form-control" name="kembalian" id="kembalian" />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 d-flex justify-content-end">
-                                    <button id="transaksi-baru" class="btn btn-warning">Transaksi Baru</button>
-                                    <button id="checkout" class="btn btn-success mx-2">Checkout</button>
+                                    <button id="transaksi-baru" class="btn btn-warning" onclick="location.reload()">Transaksi Baru</button>
+                                    <button id="checkout" class="btn btn-success mx-2" onclick="submitTransaksi()">Checkout</button>
                                 </div>
                             </div>
                         </div>

@@ -66,7 +66,7 @@ class Diskon_Model extends JI_Model{
     public function src_member($q){
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("$this->tbl_as.diskon", "diskon");
-        $this->db->where_as("$this->tbl_as.minimum_transaksi", $q, "<=", "=");
+        $this->db->where_as("$this->tbl_as.minimum_transaksi", $q, "AND", "<=");
         $this->db->order_by("$this->tbl_as.minimum_transaksi", "desc");
         return $this->db->get_first();
     }
