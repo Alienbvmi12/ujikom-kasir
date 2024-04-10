@@ -26,6 +26,25 @@ class Transaksi extends JI_Controller
         $this->render();
     }
 
+    public function invoice($no_transaksi)
+    {
+        $data = $this->__init();
+
+        if (!$this->is_login()) {
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
+        }
+
+        $data["transaksi_header"] = $this->tm->get($no_transaksi);
+        $data["transaksi_detail"] = $this->tm->get_detail($no_transaksi);
+
+
+        $this->putThemeContent("laporan/struk", $data);
+        $this->loadLayout("plain", $data);
+        $this->render();
+    }
+
     public function process()
     {
         $data = $this->__init();
@@ -40,6 +59,111 @@ class Transaksi extends JI_Controller
         $input = json_decode(file_get_contents("php://input"), true);
 
         $tanggal = date("Y-m-d");
+        $no_transaksi = $this->__gen_no_transaksi($tanggal);
+
+        $input["transaksi"]["id"] = $no_transaksi;
+
+        $input["transaksi"]["tanggal_transaksi"] = $tanggal;
+
+        $vald = $this->tm->validate($input["transaksi"], "insert", [
+            "tanggal_transaksi" => ["required"],
+            "user_id" => ["required"],
+            "subtotal_harga" => ["required", "max:13"],
+            "total_harga" => ["required", "max:13"],
+            "cash" => ["required", "max:13"]
+        ]);
+
+        if (!$vald["result"]) {
+            http_response_code(422);
+            $this->status = 422;
+            $this->message = $vald["message"];
+            $this->__json_out([]);
+        }
+
+        if ($input["transaksi"]["member_id"] == null) {
+            unset($input["transaksi"]["member_id"]);
+        }
+        if ($input["transaksi"]["diskon_id"] == null) {
+            unset($input["transaksi"]["diskon_id"]);
+        }
+        if ($input["transaksi"]["diskon"] == null) {
+            unset($input["transaksi"]["diskon"]);
+        } else {
+            $vald = $this->tm->validate($input["transaksi"], "insert", [
+                "diskon" => ["required", "max:3"],
+                "diskon_id" => ["required"],
+            ]);
+
+            if (!$vald["result"]) {
+                http_response_code(422);
+                $this->status = 422;
+                $this->message = $vald["message"];
+                $this->__json_out([]);
+            }
+        }
+
+        // Input transaksi to DB
+
+        try {
+            $this->tm->set($input["transaksi"]);
+
+            //Process detail transaksi 
+
+            foreach ($input["transaksi_detail"] as $detail) {
+                $detail["transaksi_id"] = $no_transaksi;
+
+                unset($detail["produk"]);
+
+                $vald = $this->tm->validate($detail, "insert", [
+                    "produk_id" => ["required"],
+                    "harga_satuan" => ["required", "max:13"],
+                    "qty" => ["required", "max:11"],
+                ]);
+
+                if (!$vald["result"]) {
+                    http_response_code(422);
+                    $this->status = 422;
+                    $this->message = $vald["message"];
+                    $this->__json_out([]);
+                }
+
+                if ($detail["diskon_id"] == null) {
+                    unset($detail["diskon_id"]);
+                }
+                if ($detail["diskon"] == null) {
+                    unset($detail["diskon"]);
+                } else {
+                    $vald = $this->tm->validate($detail, "insert", [
+                        "diskon" => ["required", "max:3"],
+                        "diskon_id" => ["required"],
+                    ]);
+
+                    if (!$vald["result"]) {
+                        http_response_code(422);
+                        $this->status = 422;
+                        $this->message = $vald["message"];
+                        $this->__json_out([]);
+                    }
+                }
+
+                $this->tm->insert_detail($detail);
+            }
+            http_response_code(200);
+            $this->status = 200;
+            $this->message = "Transaksi Sukses";
+            $this->__json_out([
+                "redirect_url" => base_url() . "transaksi/invoice/" . $no_transaksi . "/"
+            ]);
+        } catch (Exception $ee) {
+            http_response_code(200);
+            $this->status = 200;
+            $this->message = "Internal Server Error";
+            $this->__json_out([]);
+        }
+    }
+
+    private function __gen_no_transaksi($tanggal)
+    {
         $no_transaksi = date("Ymd");
         $transaksiCount = intval($this->tm->countTransaksiByDate($tanggal)->total) + 1;
         $cos_tam = "";
@@ -60,42 +184,7 @@ class Transaksi extends JI_Controller
         }
 
         $no_transaksi .= $cos_tam . $transaksiCount;
-
-        $input["transaksi"]["tanggal_transaksi"] = $tanggal;
-
-        $vald = $this->tm->validate($input["transaksi"], "insert", [
-            "tanggal_transaksi" => ["required"],
-            "user_id" => ["required"],
-            "subtotal_harga" => ["required", "max:13"],
-            "total_harga" => ["required", "max:13"],
-            "diskon" => ["max:3"],
-            "cash" => ["required", "max:13"]
-        ]);
-
-        if (!$vald["result"]) {
-            http_response_code(422);
-            $this->status = 422;
-            $this->message = $vald["message"];
-            $this->__json_out([]);
-        }
-        
-        if( $input["transaksi"]["member_id"] == null){
-            unset($input["transaksi"]["member_id"]);
-        }
-        if( $input["transaksi"]["diskon_id"] == null){
-            unset($input["transaksi"]["diskon_id"]);
-        }
-        if( $input["transaksi"]["diskon"] == null){
-            unset($input["transaksi"]["diskon"]);
-        }
-
-        $ins = $this->tm->set($input["transaksi"]);
-        http_response_code(200);
-        $this->status = 200;
-        $this->message = "Transaksi Sukses";
-        $this->__json_out([
-            "redirect_url" => base_url() . "transaksi/invoice/" . $no_transaksi . "/"
-        ]);
+        return $no_transaksi;
     }
 
     public function __api_produk()

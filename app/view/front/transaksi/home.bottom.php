@@ -282,7 +282,7 @@
             toastr.warning("Mohon isi nominal pembayaran terlebih dahulu!!");
             return;
         }
-        if (info_transaksi.bayar < info_transaksi.kembalian) {
+        if (info_transaksi.bayar < info_transaksi.total) {
             toastr.warning("Nominal pembayaran tidak mencukupi!!");
             return;
         }
@@ -297,7 +297,7 @@
                 total_harga: info_transaksi.total,
                 cash: info_transaksi.bayar
             },
-            list: keranjang
+            transaksi_detail: keranjang
         }
 
         $.ajax({

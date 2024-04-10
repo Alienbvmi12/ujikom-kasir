@@ -83,4 +83,8 @@ class Produk_Model extends JI_Model
         $this->db->order_by("$this->tbl2_as.expired_date", "asc");
         return $this->db->get_first();
     }
+
+    public function get(){
+        return $this->db->get();
+    }
 }

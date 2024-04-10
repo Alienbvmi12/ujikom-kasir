@@ -24,6 +24,6 @@
         <?php }
         } ?>
         <a class="nav-link text-secondary <?= $active === 'transaksi' ? 'text-dark' : '' ?>" href="<?= base_url() ?>transaksi"><i class="fa-solid fa-cash-register"></i> Transaksi</a>
-        <a class="nav-link text-secondary <?= $active === 'laporan' ? 'text-dark' : '' ?>" href="<?= base_url() ?>laporan"><i class="fa-solid fa-file-lines"></i> Laporan Penjualan</a>
+        <a class="nav-link text-secondary <?= $active === 'laporan' ? 'text-dark' : '' ?>" href="<?= base_url() ?>penjualan"><i class="fa-solid fa-file-lines"></i> Laporan Penjualan</a>
     </nav>
 </div>

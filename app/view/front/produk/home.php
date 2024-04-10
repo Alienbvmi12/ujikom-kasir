@@ -8,6 +8,9 @@
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('create')">
                     Buat Baru
                 </button>
+                <a href="<?=base_url()?>laporan/stok/" type="button" class="btn btn-info">
+                    Laporan Stok
+                </a>
                 <table id="datatable" class="table table-striped table-hover table-borderless table-primary align-middle">
                 </table>
             </div>
@@ -22,7 +25,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modalTitle">
-                    Form Data 
+                    Form Data
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -37,7 +40,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Harga(Rp)</label>
-                                    <input type="number" class="form-control" name="harga" id="harga" placeholder="Gunakan titik (.) sebagai koma"/>
+                                    <input type="number" class="form-control" name="harga" id="harga" placeholder="Gunakan titik (.) sebagai koma" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Stok</label>
