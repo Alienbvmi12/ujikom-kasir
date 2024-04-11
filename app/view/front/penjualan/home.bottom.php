@@ -83,4 +83,14 @@
             table2.ajax.url(base_url + "penjualan/omset/" + from + "/" + until + "/").load();
         }
     }
+
+    function printLap(type) {
+        var from = $("#date-from").val();
+        var until = $("#date-until").val();
+        if (from == "" || until == "") {
+            toastr.warning("Lengkapi rentang tanggal terlebih dahulu!!");
+        } else {
+            location.href = base_url + "laporan/penjualan/"+type+"/" + from + "/" + until + "/"
+        }
+    }
 </script>

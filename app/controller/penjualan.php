@@ -10,7 +10,7 @@ class Penjualan extends JI_Controller
 
     public function index()
     {
-        $data = array();
+        $data = $this->__init();
         if (!$this->is_login()) {
             redir(base_url());
         }

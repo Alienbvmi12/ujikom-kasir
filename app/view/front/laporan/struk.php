@@ -54,7 +54,7 @@
                             </div>
                         <?php
                             $subtotal += floatval($data->harga_satuan) * floatval($data->qty);
-                            $total_qty++;
+                            $total_qty += intval($data->qty);
                         }
                         ?>
                     </div>

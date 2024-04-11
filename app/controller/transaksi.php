@@ -26,25 +26,6 @@ class Transaksi extends JI_Controller
         $this->render();
     }
 
-    public function invoice($no_transaksi)
-    {
-        $data = $this->__init();
-
-        if (!$this->is_login()) {
-            $this->status = 401;
-            $this->message = "Unauthorized";
-            $this->__json_out([]);
-        }
-
-        $data["transaksi_header"] = $this->tm->get($no_transaksi);
-        $data["transaksi_detail"] = $this->tm->get_detail($no_transaksi);
-
-
-        $this->putThemeContent("laporan/struk", $data);
-        $this->loadLayout("plain", $data);
-        $this->render();
-    }
-
     public function process()
     {
         $data = $this->__init();
@@ -152,7 +133,7 @@ class Transaksi extends JI_Controller
             $this->status = 200;
             $this->message = "Transaksi Sukses";
             $this->__json_out([
-                "redirect_url" => base_url() . "transaksi/invoice/" . $no_transaksi . "/"
+                "redirect_url" => base_url() . "laporan/struk/" . $no_transaksi . "/"
             ]);
         } catch (Exception $ee) {
             http_response_code(200);
