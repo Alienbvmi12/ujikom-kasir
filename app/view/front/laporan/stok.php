@@ -31,7 +31,7 @@
             <?php
             foreach ($produk as $data) {
             ?>
-                <tr>
+                <tr <?= $data->stok <= 10 ? 'class="table-danger"': ''?>>
                     <td><?= $data->id ?></td>
                     <td><?= $data->nama_produk ?></td>
                     <td>Rp.<script>

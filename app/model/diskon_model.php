@@ -26,8 +26,6 @@ class Diskon_Model extends JI_Model{
             $this->db->where("$this->tbl_as.id", $q, "OR", "%like%", 1, 0);
             $this->db->where("diskon", $q, "OR", "%like%", 0, 0);
             $this->db->where("deskripsi", $q, "OR", "%like%", 0, 0);
-            $this->db->where("type", $q, "OR", "%like%", 0, 0);
-            $this->db->where_as("concat($this->tbl2_as.id, ' - ', $this->tbl2_as.nama_produk)", $q, "OR", "%like%", 0, 0);
             $this->db->where("minimum_transaksi", $q, "OR", "%like%", 0, 0);
             $this->db->where("expired_date", $q, "OR", "%like%", 0, 1);
         }
@@ -37,12 +35,8 @@ class Diskon_Model extends JI_Model{
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("$this->tbl_as.diskon", "diskon");
         $this->db->select_as("$this->tbl_as.deskripsi", "deskripsi");
-        $this->db->select_as("$this->tbl_as.type", "type");
-        $this->db->select_as("concat($this->tbl2_as.id, ' - ', $this->tbl2_as.nama_produk)", "nama_produk");
         $this->db->select_as("$this->tbl_as.minimum_transaksi", "minimum_transaksi");
         $this->db->select_as("$this->tbl_as.expired_date", "expired_date");
-
-        $this->db->join($this->tbl2, $this->tbl2_as, "id", $this->tbl_as, "produk_id", "left");
 
         $this->__search($data->search);
         $this->db->order_by($this->columns[$data->column], $data->dir);
@@ -55,18 +49,11 @@ class Diskon_Model extends JI_Model{
         return $this->db->get_first();
     }
 
-    public function src_produk($q){
-        $this->db->select_as("$this->tbl_as.id", "id");
-        $this->db->select_as("$this->tbl_as.diskon", "diskon");
-        $this->db->where_as("$this->tbl_as.produk_id", $q, "AND", "=");
-        $this->db->order_by("$this->tbl_as.expired_date", "asc");
-        return $this->db->get_first();
-    }
-
     public function src_member($q){
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("$this->tbl_as.diskon", "diskon");
         $this->db->where_as("$this->tbl_as.minimum_transaksi", $q, "AND", "<=");
+        $this->db->where("$this->tbl_as.expired_date", date("Y-m-d"), "AND", ">");
         $this->db->order_by("$this->tbl_as.minimum_transaksi", "desc");
         return $this->db->get_first();
     }

@@ -13,7 +13,7 @@ class Member extends JI_Controller
         $data = $this->__init();
         $data["active"] = "member";
 
-        if (!$this->is_login()) {
+        if (!$this->is_login() or !$this->is_admin()) {
             redir(base_url());
         }
 

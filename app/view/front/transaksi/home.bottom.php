@@ -63,32 +63,16 @@
                     }
                 },
                 {
-                    title: "Sub Total",
+                    title: "Total",
                     render: function(data, type, row, meta) {
                         let subtotal = parseInt(row.qty) * parseFloat(row.harga_satuan);
                         return "Rp." + $.number(subtotal, 2, ",", ".");;
                     }
                 },
                 {
-                    title: "Diskon",
-                    data: "diskon",
-                    render: function(data, type, row, meta) {
-                        return data < 1 ? "-" : data + "%";
-                    }
-                },
-                {
-                    title: "Total",
-                    render: function(data, type, row, meta) {
-                        let subtotal = parseInt(row.qty) * parseFloat(row.harga_satuan);
-                        let diskon = subtotal * (parseInt(row.diskon ?? 0) / 100);
-                        let total = subtotal - diskon;
-                        return "Rp." + $.number(total, 2, ",", ".");
-                    }
-                },
-                {
                     title: "Aksi",
                     render: function(data, type, row) {
-                        return `<button class="btn btn-danger" onclick="removeFromCart('` + row.id + `')"><i class="fa-regular fa-trash-can"></i></button>`;
+                        return `<button class="btn btn-danger" onclick="removeFromCart('` + row.produk_id + `')"><i class="fa-regular fa-trash-can"></i></button>`;
                     }
                 },
             ]
@@ -137,7 +121,7 @@
 
         $.ajax({
             type: "get",
-            url: base_url + "transaksi/__api_produk_diskon/" + produk_id + "/",
+            url: base_url + "transaksi/__api_produk_add/" + produk_id + "/",
             dataType: false,
             processData: false,
             success: function(response) {
@@ -158,8 +142,6 @@
                                 produk: response.data.produk,
                                 qty: total_qty,
                                 harga_satuan: response.data.harga_satuan,
-                                diskon_id: response.data.diskon_id,
-                                diskon: response.data.diskon,
                             };
 
                             keranjang[idx] = tam;
@@ -180,12 +162,12 @@
                         produk: response.data.produk,
                         qty: qty,
                         harga_satuan: response.data.harga_satuan,
-                        diskon_id: response.data.diskon_id,
-                        diskon: response.data.diskon,
                     };
 
                     keranjang.push(tam);
                 }
+
+                console.log(keranjang);
 
                 refreshTable();
             },
@@ -201,6 +183,7 @@
                 keranjang.splice(idx, 1);
             }
         });
+        console.log(keranjang);
         refreshTable();
     }
 
@@ -223,9 +206,7 @@
     function countSubtotalTrans() {
         let subtotal = 0.0;
         keranjang.forEach((value, index) => {
-            let row_subtotal = value.qty * value.harga_satuan;
-            let row_diskon = row_subtotal * (value.diskon / 100);
-            let row_total = row_subtotal - row_diskon;
+            let row_total = value.qty * value.harga_satuan;
             subtotal += row_total;
         });
         $("#subtotal_trans").val(
@@ -292,8 +273,6 @@
                 user_id: kasir,
                 member_id: $("#member_id").val() == "" ? null : $("#member_id").val(),
                 subtotal_harga: info_transaksi.subtotal,
-                diskon_id: info_transaksi.diskon.id ?? null,
-                diskon: info_transaksi.diskon.diskon ?? null,
                 total_harga: info_transaksi.total,
                 cash: info_transaksi.bayar
             },

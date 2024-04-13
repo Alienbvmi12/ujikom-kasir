@@ -40,41 +40,31 @@
                         <?php
                         $total_qty = 0;
                         $subtotal = 0;
-                        $diskon = $subtotal * (intval($transaksi_header->diskon ?? 0) / 100);
-                        $total = $subtotal - $diskon;
-                        $bayar = floatval($transaksi_header->cash);
-                        $kembalian = $bayar - $total;
 
                         foreach ($transaksi_detail as $data) {
                         ?>
                             <div class="row">
                                 <div class="col-4"><?= $data->nama_produk ?></div>
-                                <div class="col-4" style="text-align:center"><?= $data->harga_satuan ?> x <?= $data->qty ?></div>
-                                <div class="col-4" style="text-align:right"><?= floatval($data->harga_satuan) * floatval($data->qty) ?></div>
+                                <div class="col-4" style="text-align:center">
+                                    <script>
+                                        document.write($.number(<?= floatval($data->harga_satuan) ?>, 2, ",", "."))
+                                    </script> x <?= $data->qty ?>
+                                </div>
+                                <div class="col-4" style="text-align:right">
+                                    <script>
+                                        document.write($.number(<?= floatval(floatval($data->harga_satuan) * floatval($data->qty)) ?>, 2, ",", "."))
+                                    </script>
+                                </div>
                             </div>
                         <?php
                             $subtotal += floatval($data->harga_satuan) * floatval($data->qty);
                             $total_qty += intval($data->qty);
                         }
-                        ?>
-                    </div>
 
-                    <div class="border-bottom p-3 d-flex justify-content-between">
-                        <?php
-                        $diskon_produk = 0;
-                        foreach ($transaksi_detail as $data) {
-                            if ($data->diskon_id != null) {
-                                $subtotal = floatval($data->harga_satuan) * floatval($data->qty);
-                                $diskon = $subtotal * (intval($data->diskon) / 100);
-                                $total = $subtotal - $diskon;
-                        ?>
-                                <div><?= $data->nama_produk ?></div>
-                                <div style="text-align:center"><?= $data->diskon ?>%</div>
-                                <div style="text-align:right"><?= $total ?></div>
-                        <?php
-                                $diskon_produk++;
-                            }
-                        }
+                        $diskon = $subtotal * (intval($transaksi_header->diskon ?? 0) / 100);
+                        $total = $subtotal - $diskon;
+                        $bayar = floatval($transaksi_header->cash);
+                        $kembalian = $bayar - $total;
                         ?>
                     </div>
 
@@ -85,17 +75,17 @@
                                     <td>Total Qty</td>
                                     <td style="text-align:right"><?= $total_qty ?></td>
                                 </tr>
-                                <tr>
-                                    <td>Diskon Produk</td>
-                                    <td style="text-align:right"><?= $diskon_produk ?></td>
-                                </tr>
                             </table>
                         </div>
                         <div class="col-sm-6">
                             <table style="width:100%">
                                 <tr>
                                     <td>Subtotal</td>
-                                    <td style="text-align:right"><?= $subtotal ?></td>
+                                    <td style="text-align:right">
+                                        <script>
+                                            document.write($.number(<?= floatval($subtotal) ?>, 2, ",", "."))
+                                        </script>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Diskon</td>
@@ -103,20 +93,32 @@
                                 </tr>
                                 <tr>
                                     <td>Total</td>
-                                    <td style="text-align:right"><?= $total ?></td>
+                                    <td style="text-align:right">
+                                        <script>
+                                            document.write($.number(<?= floatval($total) ?>, 2, ",", "."))
+                                        </script>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Bayar</td>
-                                    <td style="text-align:right"><?= $bayar ?></td>
+                                    <td style="text-align:right">
+                                        <script>
+                                            document.write($.number(<?= floatval($bayar) ?>, 2, ",", "."))
+                                        </script>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>Kembalian</td>
-                                    <td style="text-align:right"><?= $kembalian ?></td>
+                                    <td style="text-align:right">
+                                        <script>
+                                            document.write($.number(<?= floatval($kembalian) ?>, 2, ",", "."))
+                                        </script>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <div class="p-3">
+                    <div class="p-3 text-center">
                         <?php
                         if ($transaksi_header->diskon != null) {
                             echo "Anda mendapatkan promo diskon membership sebesar $transaksi_header->diskon%";
@@ -139,3 +141,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    setTimeout(() => {
+        print();
+    }, 500);
+</script>

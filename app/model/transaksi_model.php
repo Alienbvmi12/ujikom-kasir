@@ -27,6 +27,13 @@ class Transaksi_Model extends JI_Model
         return $this->db->get_first();
     }
 
+    public function count_terjual()
+    {
+        $this->db->from($this->tbl2, $this->tbl2_as);
+        $this->db->select_as("SUM($this->tbl2_as.qty)", "total");
+        return $this->db->get_first();
+    }
+
     public function countTransaksiByDate($date)
     {
         $this->db->select_as("COUNT(*)", "total");
@@ -60,10 +67,7 @@ class Transaksi_Model extends JI_Model
         $this->db->select_as("$this->tbl3_as.nama_produk", "nama_produk");
         $this->db->select_as("$this->tbl2_as.harga_satuan", "harga_satuan");
         $this->db->select_as("$this->tbl2_as.qty", "qty");
-        $this->db->select_as("$this->tbl2_as.diskon_id", "diskon_id");
-        $this->db->select_as("$this->tbl2_as.diskon", "diskon");
         $this->db->join($this->tbl3, $this->tbl3_as, "id", $this->tbl2_as, "produk_id", "left");
-        $this->db->join($this->tbl4, $this->tbl4_as, "id", $this->tbl2_as, "diskon_id", "left");
         $this->db->where("$this->tbl2_as.transaksi_id", $no_transaksi);
         return $this->db->get();
     }

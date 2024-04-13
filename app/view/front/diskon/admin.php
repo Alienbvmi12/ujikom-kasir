@@ -3,7 +3,9 @@
 
     </div>
     <div class="card-body">
-        <h4 class="card-title">Promo Diskon Membership</h4>
+        <h4 class="card-title">Kelola Diskon</h4>
+        <small class="text-secondary">Ketika transaksi, diskon akan dipilih otomatis oleh sistem berdasarkan tanggal kadaluarsanya. Voucher yang akan kadaluarsa lebih awal yang akan digunakan</small><br>
+        <button class="btn btn-success my-3" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('create')">Buat Baru</button>
         <div class="table-responsive">
             <table id="datatable" class="table table-striped table-hover table-borderless table-primary align-middle">
 

@@ -54,6 +54,8 @@ class Transaksi extends JI_Controller
             "cash" => ["required", "max:13"]
         ]);
 
+        unset($input["transaksi"]["total_harga"]);
+
         if (!$vald["result"]) {
             http_response_code(422);
             $this->status = 422;
@@ -106,25 +108,6 @@ class Transaksi extends JI_Controller
                     $this->status = 422;
                     $this->message = $vald["message"];
                     $this->__json_out([]);
-                }
-
-                if ($detail["diskon_id"] == null) {
-                    unset($detail["diskon_id"]);
-                }
-                if ($detail["diskon"] == null) {
-                    unset($detail["diskon"]);
-                } else {
-                    $vald = $this->tm->validate($detail, "insert", [
-                        "diskon" => ["required", "max:3"],
-                        "diskon_id" => ["required"],
-                    ]);
-
-                    if (!$vald["result"]) {
-                        http_response_code(422);
-                        $this->status = 422;
-                        $this->message = $vald["message"];
-                        $this->__json_out([]);
-                    }
                 }
 
                 $this->tm->insert_detail($detail);
@@ -206,7 +189,7 @@ class Transaksi extends JI_Controller
         $this->__json_out($res);
     }
 
-    public function __api_produk_diskon($id = "")
+    public function __api_produk_add($id = "")
     {
         $data = $this->__init();
         if (!$this->is_login()) {
@@ -223,7 +206,7 @@ class Transaksi extends JI_Controller
             $this->__json_out([]);
         }
 
-        $res = $this->pm->src_produk_diskon($id);
+        $res = $this->pm->src_produk($id);
 
         http_response_code(200);
         $this->status = 200;
@@ -241,7 +224,7 @@ class Transaksi extends JI_Controller
             $this->__json_out([]);
         }
 
-        $q = $_GET["nominal"] ?? "0";
+        $q = $_GET["nominal"] == 0 ? 0.0000000000000001 : $_GET["nominal"];
         $res = $this->dm->src_member($q);
 
         http_response_code(200);

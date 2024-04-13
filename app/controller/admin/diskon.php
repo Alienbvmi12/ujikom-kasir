@@ -19,8 +19,8 @@ class Diskon extends JI_Controller
             redir(base_url());
         }
 
-        $this->putJsReady("diskon/home.bottom", $data);
-        $this->putThemeContent("diskon/home", $data);
+        $this->putJsReady("diskon/admin.bottom", $data);
+        $this->putThemeContent("diskon/admin", $data);
         $this->loadLayout("col-1", $data);
         $this->render();
     }
@@ -80,8 +80,8 @@ class Diskon extends JI_Controller
         $vald = $this->dm->validate($req, "insert", [
             "diskon" => ['required', 'max:3'],
             "deskripsi" => ['required'],
-            "type" => ['required'],
-            "expired_date" => ['required', "max:10", "min:10", "as: Tanggal Kadaluarsa"]
+            "expired_date" => ['required', "max:10", "min:10", "as: Tanggal Kadaluarsa"],
+            "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
         ]);
 
         if (!$vald["result"]) {
@@ -89,18 +89,6 @@ class Diskon extends JI_Controller
             $this->status = 422;
             $this->message = $vald["message"];
             $this->__json_out([]);
-        }
-
-        if ($req["type"] == "0") {
-            $vald = $this->dm->validate($req, "insert", [
-                "produk_id" => ['required', 'max:7', "as: Produk"]
-            ]);
-            unset($req["minimum_transaksi"]);
-        } else {
-            $vald = $this->dm->validate($req, "insert", [
-                "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
-            ]);
-            unset($req["produk_id"]);
         }
 
         if (!$vald["result"]) {
@@ -140,28 +128,9 @@ class Diskon extends JI_Controller
             "id" => ["required"],
             "diskon" => ['required', 'max:3'],
             "deskripsi" => ['required'],
-            "type" => ['required'],
-            "expired_date" => ['required', "max:10", "min:10", "as: Tanggal Kadaluarsa"]
+            "expired_date" => ['required', "max:10", "min:10", "as: Tanggal Kadaluarsa"],
+            "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
         ]);
-
-        if (!$vald["result"]) {
-            http_response_code(422);
-            $this->status = 422;
-            $this->message = $vald["message"];
-            $this->__json_out([]);
-        }
-
-        if ($req["type"] == "0") {
-            $vald = $this->dm->validate($req, "update", [
-                "produk_id" => ['required', 'max:7', "as: Produk"]
-            ]);
-            unset($req["minimum_transaksi"]);
-        } else {
-            $vald = $this->dm->validate($req, "update", [
-                "minimum_transaksi" => ['required', 'max:13', "as: Minimum Transaksi"]
-            ]);
-            unset($req["produk_id"]);
-        }
 
         if (!$vald["result"]) {
             http_response_code(422);

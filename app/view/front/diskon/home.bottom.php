@@ -3,7 +3,7 @@
     let table;
     let edit_id = 0;
     $(document).ready(function() {
-        let request_url = base_url + "admin/diskon/read/";
+        let request_url = base_url + "petugas/diskon/read/";
         table = $("#datatable").DataTable({
             serverSide: true,
             ajax: {
@@ -29,28 +29,6 @@
                     data: "deskripsi"
                 },
                 {
-                    title: "Tipe",
-                    data: "type",
-                    render: function(data, type, row) {
-                        if (data == "0") {
-                            return "Produk"
-                        } else if (data == "1") {
-                            return "Transaksi"
-                        }
-                    }
-                },
-                {
-                    title: "Produk",
-                    data: "nama_produk",
-                    render: function(data, type, row) {
-                        if (data == null) {
-                            return "-"
-                        } else {
-                            return data
-                        }
-                    }
-                },
-                {
                     title: "Minimum Transaksi",
                     data: "minimum_transaksi",
                     render: function(data, type, row) {
@@ -64,184 +42,10 @@
                 {
                     title: "Tanggal Kadaluarsa",
                     data: "expired_date"
-                },
-                {
-                    title: "Aksi",
-                    defaultContent: `
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('edit', this)">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteM(this)">Delete</button>
-                                    `
                 }
             ]
         });
-
-        $("#produk_id").select2({
-            theme: "bootstrap-5",
-            dropdownParent: $("#modal"),
-            ajax: {
-                url: base_url + "admin/diskon/search/",
-                dataType: "json",
-                processResults: function(data) {
-                    return {
-                        results: data.data
-                    };
-                }
-            }
-        });
-
-        document.getElementById("type").addEventListener("change", () => {
-            const val = document.getElementById("type").value;
-            $("#minimum-transaksi-container").removeClass("d-none");
-            $("#produk-id-container").removeClass("d-none");
-            if (val == "0") {
-                $("#minimum-transaksi-container").addClass("d-none");
-            } else {
-                $("#produk-id-container").addClass("d-none");
-            }
-        });
     });
 
-    function modal(type, context) {
-        if (type == 'edit') {
-            const row = context.parentNode.parentNode.getElementsByTagName("td");
-            edit_id = row[0].innerHTML;
-            $("#diskon").val(row[1].innerHTML.replaceAll("%", ""));
-            $("#deskripsi").val(row[2].innerHTML);
-            $("#type").val(row[3].innerHTML.toLowerCase() == "produk" ? "0" : "1");
-            $("#minimum_transaksi").val(row[5].innerHTML != "-" ? row[5].innerHTML.replaceAll("Rp.", "").replaceAll(".", "").replaceAll(",", ".") : "0");
-            $("#expired_date").val(row[6].innerHTML);
 
-            const typee = row[3].innerHTML.toLowerCase() == "produk" ? "0" : "1";
-            $("#minimum-transaksi-container").removeClass("d-none");
-            $("#produk-id-container").removeClass("d-none");
-            if (typee == "0") {
-                $("#minimum-transaksi-container").addClass("d-none");
-
-                let $newOption = $("<option selected='selected'></option>")
-                    .val(row[4].innerHTML.split("-")[0])
-                    .text(row[4].innerHTML);
-                $("#produk_id").append($newOption).trigger('change');
-
-            } else {
-                $("#produk-id-container").addClass("d-none");
-            }
-
-            // $.ajax({
-            //     url: base_url + "admin/diskon/get_by_id/" + edit_id,
-            //     method: "GET",
-            //     processData: false,
-            //     contentType: false,
-            //     success: function(res) {
-            //         $("#diskon").val(res.data.diskon);
-            //         $("#deskripsi").val(res.data.deskripsi);
-            //         $("#type").val(res.data.type);
-            //         $("#minimum_transaksi").val(res.data.minimum_transaksi ?? "");
-            //         $("#expired_date").val(res.data.expired_date);
-
-            //         const val = document.getElementById("type").value;
-            //         $("#minimum-transaksi-container").removeClass("d-none");
-            //         $("#produk-id-container").removeClass("d-none");
-            //         if (val == "0") {
-            //             $("#minimum-transaksi-container").addClass("d-none");
-
-            //             let $newOption = $("<option selected='selected'></option>")
-            //                 .val(res.data.produk_id)
-            //                 .text(row[4].innerHTML);
-            //             $("#produk_id").append($newOption).trigger('change');
-
-            //         } else {
-            //             $("#produk-id-container").addClass("d-none");
-            //         }
-            //     },
-            //     fail: function(xhr) {
-            //         toastr.danger(xhr.responseJSON.message)
-            //     }
-            // })
-            document.getElementById("submit").setAttribute("onclick", "editM()");
-            $("#modalTitle").html("Edit Data");
-        } else {
-            $("#diskon").val("");
-            $("#deskripsi").val("");
-            $("#type").val("");
-            $("#produk_id").val("");
-            $("#minimum_transaksi").val("");
-            $("#expired_date").val("");
-            document.getElementById("submit").setAttribute("onclick", "create()");
-            $("#modalTitle").html("Tambah Data");
-        }
-    }
-
-    function create() {
-        const form = document.getElementById("form");
-        const formData = new FormData(form)
-        $.ajax({
-            type: "post",
-            url: base_url + "admin/diskon/create",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                if (response.status == 200) {
-                    toastr.success("<b>Berhasil</b> <br> " + response.message);
-                } else {
-                    toastr.error("<b>Gagal</b> <br> " + response.message);
-                }
-                table.ajax.reload();
-            },
-            error: function(xhr) {
-                toastr.error("<b>Error</b> <br> " + xhr.responseJSON.message);
-                table.ajax.reload();
-            }
-        });
-    }
-
-    function deleteM(context) {
-        Swal.fire({
-            title: "Konfirmasi",
-            text: "Apakah anda yakin untuk menghapus data?",
-            icon: "warning",
-            showCancelButton: true
-        }).then(function(result) {
-            if (result.isConfirmed) {
-                const id = context.parentNode.parentNode.getElementsByTagName("td")[0].innerHTML;
-                $.post(base_url + "admin/diskon/delete/" + id + "/")
-                    .done(function(response) {
-                        if (response.status == 200) {
-                            toastr.success("<b>Berhasil</b> <br> " + response.message);
-                        } else {
-                            toastr.error("<b>Gagal</b> <br> " + response.message);
-                        }
-                        table.ajax.reload();
-                    }).fail(function(xhr) {
-                        toastr.error("<b>Error</b> <br> " + xhr.responseJSON.message);
-                        table.ajax.reload();
-                    });
-            }
-        })
-    }
-
-    function editM() {
-        const form = document.getElementById("form");
-        const formData = new FormData(form)
-        formData.append("id", edit_id);
-        $.ajax({
-            type: "post",
-            url: base_url + "admin/diskon/edit",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                if (response.status == 200) {
-                    toastr.success("<b>Berhasil</b> <br> " + response.message);
-                } else {
-                    toastr.error("<b>Gagal</b> <br> " + response.message);
-                }
-                table.ajax.reload();
-            },
-            error: function(xhr) {
-                toastr.error("<b>Error</b> <br> " + xhr.responseJSON.message);
-                table.ajax.reload();
-            }
-        });
-    }
 </script>

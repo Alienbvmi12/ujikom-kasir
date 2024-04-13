@@ -15,7 +15,9 @@ class Laporan extends JI_Controller
         $data = $this->__init();
 
         if (!$this->is_login()) {
-            redir(base_url());
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $data["produk"] = $this->pm->get();
@@ -30,7 +32,9 @@ class Laporan extends JI_Controller
         $data = $this->__init();
 
         if (!$this->is_login()) {
-            redir(base_url());
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $data["transaksi_header"] = $this->tm->get($no_transaksi);
@@ -46,8 +50,10 @@ class Laporan extends JI_Controller
     {
         $data = $this->__init();
 
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->is_login()) {
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $data["from"] = $from;
@@ -56,7 +62,8 @@ class Laporan extends JI_Controller
         if ($type == "omset") {
             $data["omset"] = $this->pjm->omset(new stdClass(), $from, $until, true);
             $this->putThemeContent("laporan/omset", $data);
-        } else {
+        }
+        else{
             $data["transaksi"] = $this->pjm->read(new stdClass(), $from, $until, true);
             $this->putThemeContent("laporan/transaksi", $data);
         }

@@ -13,7 +13,7 @@ class Member extends JI_Controller
         $data = $this->__init();
         $data["active"] = "member";
 
-        if (!$this->is_login()) {
+        if (!$this->is_login() or $this->is_admin()) {
             redir(base_url());
         }
 
@@ -26,7 +26,7 @@ class Member extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
+        if (!$this->is_login() or $this->is_admin()) {
             redir(base_url());
         }
 
@@ -46,7 +46,7 @@ class Member extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or !$this->is_admin()) {
+        if (!$this->is_login() or $this->is_admin()) {
             redir(base_url());
         }
 
@@ -85,7 +85,7 @@ class Member extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or !$this->is_admin()) {
+        if (!$this->is_login() or $this->is_admin()) {
             redir(base_url());
         }
 
