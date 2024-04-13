@@ -9,7 +9,8 @@
                 <i class="fa-regular fa-user"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="triggerId">
-                <a class="dropdown-item" href="<?= base_url()?>logout">Logout</a>
+                <a class="dropdown-item" href="<?= base_url()?>profile/">Profile</a>
+                <a class="dropdown-item bg-danger text-white" href="<?= base_url()?>logout/">Logout</a>
             </div>
         </div>
 
