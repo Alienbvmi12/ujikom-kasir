@@ -45,17 +45,34 @@
                     }
                 },
                 {
+                    title: "Tanggal Kadaluarsa",
+                    data: "expired_date",
+                    render: function(data, type, row) {
+                        $exp = new Date(data + " 00:00:00");
+                        $cnt = new Date();
+
+                        console.log($cnt);
+                        if ($exp < $cnt) {
+                            return "<div class='text-danger'>" + data + "</div>"
+                        } else {
+                            return "<div>" + data + "</div>"
+                        }
+                    }
+                },
+                {
                     title: "Aksi",
                     render: function(data, type, row) {
                         if (row.status == "1") {
                             return `
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('edit', this)">Edit</button>
-                                    <button class="btn btn-danger btn-sm" onclick="status(0, this)">Nonaktifkan</button>
+                                    <button class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('edit', this)">Edit</button>
+                                    <button class="btn btn-primary btn-sm mb-1" onclick="perpanjang(this)">Perpanjang</button>
+                                    <button class="btn btn-danger btn-sm mb-1" onclick="status(0, this)">Nonaktifkan</button>
                                     `
                         } else {
                             return `
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('edit', this)">Edit</button>
-                                    <button class="btn btn-success btn-sm" onclick="status(1, this)">Aktifkan</button>
+                                    <button class="btn btn-warning btn-sm mb-1" data-bs-toggle="modal" data-bs-target="#modal" onclick="modal('edit', this)">Edit</button>
+                                    <button class="btn btn-primary btn-sm mb-1" onclick="perpanjang(this)">Perpanjang</button>
+                                    <button class="btn btn-success btn-sm mb-1" onclick="status(1, this)">Aktifkan</button>
                                     `
                         }
                     }
@@ -112,6 +129,45 @@
         });
     }
 
+    function perpanjang(context) {
+        const id = context.parentNode.parentNode.getElementsByTagName("td")[0].innerHTML;
+
+        Swal.fire({
+            title: "Perpanjang",
+            text: "Perpanjang Berapa Bulan?",
+            input: "number",
+            icon: "warning",
+            showCancelButton: true,
+            inputPlaceHolder: "Masukan jumlah bulan"
+        }).then(function(result) {
+            if (result.value == null || result.value <= 0) {
+                toastr.warning("Mohon untuk mengisi jumlah yang valid")
+            } else {
+                const formData = new FormData();
+                formData.append("perpanjang", result.value);
+                $.ajax({
+                    type: "post",
+                    url: base_url + "petugas/member/perpanjang/" + id + "/",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.status == 200) {
+                            toastr.success("<b>Berhasil</b> <br> " + response.message);
+                        } else {
+                            toastr.error("<b>Gagal</b> <br> " + response.message);
+                        }
+                        table.ajax.reload();
+                    },
+                    error: function(xhr) {
+                        toastr.error("<b>Error</b> <br> " + xhr.responseJSON.message);
+                        table.ajax.reload();
+                    }
+                });
+            }
+        })
+    }
+
     function status(status, context) {
         Swal.fire({
             title: "Konfirmasi",
@@ -121,7 +177,7 @@
         }).then(function(result) {
             if (result.isConfirmed) {
                 const id = context.parentNode.parentNode.getElementsByTagName("td")[0].innerHTML;
-                $.post(base_url + "petugas/member/"+ (status == 1 ? "activate" : "inactivate") +"/" + id + "/")
+                $.post(base_url + "petugas/member/" + (status == 1 ? "activate" : "inactivate") + "/" + id + "/")
                     .done(function(response) {
                         if (response.status == 200) {
                             toastr.success("<b>Berhasil</b> <br> " + response.message);

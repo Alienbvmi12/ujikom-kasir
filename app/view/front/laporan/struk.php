@@ -32,7 +32,7 @@
                         <tr>
                             <td>Member</td>
                             <td> : </td>
-                            <td><?= $transaksi_header->member_id ?? "" ?> - <?= $transaksi_header->member_nama ?? "" ?></td>
+                            <td><?= $transaksi_header->member_id ?? "" ?></td>
                         </tr>
                     </table>
 

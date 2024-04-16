@@ -274,7 +274,9 @@
                 member_id: $("#member_id").val() == "" ? null : $("#member_id").val(),
                 subtotal_harga: info_transaksi.subtotal,
                 total_harga: info_transaksi.total,
-                cash: info_transaksi.bayar
+                cash: info_transaksi.bayar,
+                diskon_id: info_transaksi.diskon.id,
+                diskon: info_transaksi.diskon.diskon,
             },
             transaksi_detail: keranjang
         }

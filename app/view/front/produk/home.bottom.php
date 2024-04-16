@@ -24,13 +24,21 @@
                 {
                     title: "Harga Satuan",
                     data: "harga",
-                    render: function(data, type, row){
-                        return "Rp."+$.number(data, 2, ",", ".")
+                    render: function(data, type, row) {
+                        return "Rp." + $.number(data, 2, ",", ".")
                     }
                 },
                 {
                     title: "Stok",
-                    data: "stok"
+                    data: "stok",
+                    render: function(data, type, row) {
+                        if (data < 10) {
+                            return "<div class='text-danger'>" + data + "</div>";
+                        }
+                        else{
+                            return "<div>" + data + "</div>";
+                        }
+                    }
                 },
                 {
                     title: "Aksi",
@@ -49,7 +57,7 @@
             edit_id = row[0].innerHTML;
             $("#nama_produk").val(row[1].innerHTML);
             $("#harga").val(row[2].innerHTML.replaceAll("Rp.", "").replaceAll(".", "").replaceAll(",", "."));
-            $("#stok").val(row[3].innerHTML);
+            $("#stok").val(row[3].getElementsByTagName("div")[0].innerHTML);
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");
         } else {

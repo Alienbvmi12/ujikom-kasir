@@ -46,7 +46,8 @@ class Member_Model extends JI_Model{
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama)", "text");
         $this->db->where_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama)", $q, "AND", "%like%");
+        $this->db->where("expired_date", date("Y-m-d"), "AND", ">");
         $this->db->limit("0", "15");
         return $this->db->get();
     }
-}
+}   

@@ -13,6 +13,14 @@
             order: [
                 [0, 'desc']
             ],
+            rowCallback: function(row, data) {
+                $exp = new Date(data["expired_date"] + " 00:00:00");
+                $cnt = new Date();
+
+                if ($exp < $cnt) {
+                    $(row).addClass("bg-warning");
+                }
+            },
             columns: [{
                     title: "ID",
                     data: "id"
@@ -38,9 +46,22 @@
                     data: "tanggal_registrasi"
                 },
                 {
+                    title: "Tanggal Kadaluarsa",
+                    data: "expired_date",
+                    render: function(data, type, row) {
+                        $exp = new Date(data + " 00:00:00");
+                        $cnt = new Date();
+
+                        console.log($cnt);
+                        if ($exp < $cnt) {
+                            return "<div class='text-danger'>" + data + "</div>"
+                        }
+                    }
+                },
+                {
                     title: "Status",
                     data: "status",
-                    render: function(data, type, row){
+                    render: function(data, type, row) {
                         return data == "1" ? "Aktif" : "Nonaktif";
                     }
                 },
@@ -64,7 +85,8 @@
             $("#nomor_telepon").val(row[3].innerHTML);
             $("#alamat").val(row[4].innerHTML);
             $("#tanggal_registrasi").val(row[5].innerHTML);
-            $("#status").val(row[6].innerHTML.toLowerCase() == "aktif" ? "1" : "0");
+            $("#expired_date").val(row[6].innerHTML);
+            $("#status").val(row[7].innerHTML.toLowerCase() == "aktif" ? "1" : "0");
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");
         } else {
@@ -73,6 +95,7 @@
             $("#nomor_telepon").val("");
             $("#alamat").val("");
             $("#tanggal_registrasi").val("");
+            $("#expired_date").val("");
             $("#status").val("1");
             document.getElementById("submit").setAttribute("onclick", "create()");
             $("#modalTitle").html("Tambah Data");
@@ -125,7 +148,7 @@
                         table.ajax.reload();
                     });
             }
-        })                       
+        })
     }
 
     function editM() {

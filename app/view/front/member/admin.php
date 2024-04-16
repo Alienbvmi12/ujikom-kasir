@@ -39,6 +39,13 @@
                                     <label for="" class="form-label">No. Telepon</label>
                                     <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon" placeholder="Format: 08xxxxx" />
                                 </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Status</label>
+                                    <select class="form-control" style="width: 100%" name="status" id="status">
+                                        <option value="1" selected>Aktif</option>
+                                        <option value="0">Nonaktif</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="mb-3">
@@ -46,11 +53,8 @@
                                     <input type="date" class="form-control" name="tanggal_registrasi" id="tanggal_registrasi" />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Status</label>
-                                    <select class="form-control" style="width: 100%" name="status" id="status">
-                                        <option value="1" selected>Aktif</option>
-                                        <option value="0">Nonaktif</option>
-                                    </select>
+                                    <label for="" class="form-label">Tanggal Kadaluarsa</label>
+                                    <input type="date" class="form-control" name="expired_date" id="expired_date" />
                                 </div>
                                 <div class="mb-3">
                                     <label for="" class="form-label">Alamat</label>

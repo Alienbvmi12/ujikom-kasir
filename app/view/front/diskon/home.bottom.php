@@ -41,11 +41,20 @@
                 },
                 {
                     title: "Tanggal Kadaluarsa",
-                    data: "expired_date"
+                    data: "expired_date",
+                    render: function(data, type, row) {
+                        $exp = new Date(data + " 00:00:00");
+                        $cnt = new Date();
+
+                        console.log($cnt);
+                        if ($exp < $cnt) {
+                            return "<div class='text-danger'>" + data + "</div>"
+                        } else {
+                            return "<div>" + data + "</div>"
+                        }
+                    }
                 }
             ]
         });
     });
-
-
 </script>

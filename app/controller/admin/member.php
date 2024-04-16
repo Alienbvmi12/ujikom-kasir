@@ -23,6 +23,43 @@ class Member extends JI_Controller
         $this->render();
     }
 
+    private function __generate_id_member()
+    {
+        $id_member = "";
+
+        $rand_num = random_int(1, 9999);
+        $date = date("ymd");
+        $count = $this->mm->count()->total + 1;
+
+        if ($rand_num >= 0 and $rand_num < 10) {
+            $id_member = "000" . $rand_num;
+        } elseif ($rand_num >= 10 and $rand_num < 100) {
+            $id_member = "00" . $rand_num;
+        } elseif ($rand_num >= 100 and $rand_num < 1000) {
+            $id_member = "0" . $rand_num;
+        } elseif ($rand_num >= 1000 and $rand_num < 10000) {
+            $id_member = (string) $rand_num;
+        }
+
+        $id_member .= $date;
+
+        if ($count >= 0 and $count < 10) {
+            $id_member .= "00000" . $count;
+        } elseif ($count >= 10 and $count < 100) {
+            $id_member .= "0000" . $count;
+        } elseif ($count >= 100 and $count < 1000) {
+            $id_member .= "000" . $count;
+        } elseif ($count >= 1000 and $count < 10000) {
+            $id_member .= "00" . $count;
+        } elseif ($count >= 1000 and $count < 10000) {
+            $id_member .= "0" . $count;
+        } elseif ($count >= 1000 and $count < 10000) {
+            $id_member .= (string) $count;
+        }
+
+        return $id_member;
+    }
+
     public function read()
     {
         $data = $this->__init();
@@ -56,8 +93,11 @@ class Member extends JI_Controller
             "nomor_telepon" => ['required', 'min:10', 'max:15'],
             "alamat" => ['required', 'min:3'],
             "tanggal_registrasi" => ['required', "max:10"],
-            "status" => ['required', "max:1"]
+            "status" => ['required', "max:1"],
+            "expired_date" => ["required", "max:10"]
         ]);
+
+        $req["id"] = $this->__generate_id_member();
 
         if (!$vald["result"]) {
             http_response_code(422);

@@ -23,6 +23,59 @@ class Member extends JI_Controller
         $this->render();
     }
 
+    private function __generate_id_member()
+    {
+        $id_member = "";
+
+        $rand_num = random_int(1, 9999);
+        $date = date("ymd");
+        $count = $this->mm->count()->total + 1;
+
+        if ($rand_num >= 0 and $rand_num < 10) {
+            $id_member = "000" . $rand_num;
+        } elseif ($rand_num >= 10 and $rand_num < 100) {
+            $id_member = "00" . $rand_num;
+        } elseif ($rand_num >= 100 and $rand_num < 1000) {
+            $id_member = "0" . $rand_num;
+        } elseif ($rand_num >= 1000 and $rand_num < 10000) {
+            $id_member = (string) $rand_num;
+        }
+
+        $id_member .= $date;
+
+        if ($count >= 0 and $count < 10) {
+            $id_member .= "00000" . $count;
+        } elseif ($count >= 10 and $count < 100) {
+            $id_member .= "0000" . $count;
+        } elseif ($count >= 100 and $count < 1000) {
+            $id_member .= "000" . $count;
+        } elseif ($count >= 1000 and $count < 10000) {
+            $id_member .= "00" . $count;
+        } elseif ($count >= 1000 and $count < 10000) {
+            $id_member .= "0" . $count;
+        } elseif ($count >= 1000 and $count < 10000) {
+            $id_member .= (string) $count;
+        }
+
+        return $id_member;
+    }
+
+    public function card($id)
+    {
+        $data = $this->__init();
+
+        if (!$this->is_login() or $this->is_admin()) {
+            redir(base_url());
+        }
+
+        $data["active"] = "member";
+        $data["member"] = $this->mm->id($id);
+
+        $this->putThemeContent("laporan/member", $data);
+        $this->loadLayout("plain", $data);
+        $this->render();
+    }
+
     public function read()
     {
         $data = $this->__init();
@@ -64,8 +117,10 @@ class Member extends JI_Controller
             $this->__json_out([]);
         }
 
+        $req["id"] = $this->__generate_id_member();
         $req["tanggal_registrasi"] = date("Y-m-d");
         $req["status"] = "1";
+        $req["expired_date"] = date("Y-m-d", strtotime(date("Y-m-d") . " +4 months"));
 
         try {
             $this->mm->set($req);
@@ -124,15 +179,11 @@ class Member extends JI_Controller
     public function inactivate($id)
     {
         $data = $this->__init();
-        if (!$this->is_login()) {
+        if (!$this->is_login() or $this->is_admin()) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
             $this->__json_out([]);
-        }
-
-        if (!$this->is_admin()) {
-            redir(base_url("admin/member"));
         }
 
         if ($id == "" or $id == "0" or $id == null) {
@@ -159,15 +210,11 @@ class Member extends JI_Controller
     public function activate($id)
     {
         $data = $this->__init();
-        if (!$this->is_login()) {
+        if (!$this->is_login() or $this->is_admin()) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
             $this->__json_out([]);
-        }
-
-        if (!$this->is_admin()) {
-            redir(base_url("admin/member"));
         }
 
         if ($id == "" or $id == "0" or $id == null) {
@@ -182,6 +229,39 @@ class Member extends JI_Controller
             http_response_code(200);
             $this->status = 200;
             $this->message = "Mengaktifkan member berhasil!!";
+            $this->__json_out([]);
+        } catch (Exception $e) {
+            http_response_code(500);
+            $this->status = 500;
+            $this->message = "Internal server error";
+            $this->__json_out([]);
+        }
+    }
+
+    public function perpanjang($id)
+    {
+        $data = $this->__init();
+        if (!$this->is_login() or $this->is_admin()) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
+        }
+
+        if ($id == "" or $id == "0" or $id == null) {
+            http_response_code(422);
+            $this->status = 422;
+            $this->message = "ID Undefined";
+            $this->__json_out([]);
+        }
+
+        $expired_date = date("Y-m-d", strtotime($this->mm->id($id)->expired_date . " +" . $_POST["perpanjang"] . " months"));
+
+        try {
+            $this->mm->update($id, ["expired_date" => $expired_date]);
+            http_response_code(200);
+            $this->status = 200;
+            $this->message = "Perpanjang member berhasil!!";
             $this->__json_out([]);
         } catch (Exception $e) {
             http_response_code(500);
