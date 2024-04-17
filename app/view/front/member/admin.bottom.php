@@ -13,14 +13,6 @@
             order: [
                 [0, 'desc']
             ],
-            rowCallback: function(row, data) {
-                $exp = new Date(data["expired_date"] + " 00:00:00");
-                $cnt = new Date();
-
-                if ($exp < $cnt) {
-                    $(row).addClass("bg-warning");
-                }
-            },
             columns: [{
                     title: "ID",
                     data: "id"
@@ -55,6 +47,8 @@
                         console.log($cnt);
                         if ($exp < $cnt) {
                             return "<div class='text-danger'>" + data + "</div>"
+                        } else {
+                            return "<div>" + data + "</div>"
                         }
                     }
                 },
@@ -85,7 +79,7 @@
             $("#nomor_telepon").val(row[3].innerHTML);
             $("#alamat").val(row[4].innerHTML);
             $("#tanggal_registrasi").val(row[5].innerHTML);
-            $("#expired_date").val(row[6].innerHTML);
+            $("#expired_date").val(row[6].getElementsByTagName("div")[0].innerHTML);
             $("#status").val(row[7].innerHTML.toLowerCase() == "aktif" ? "1" : "0");
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");

@@ -72,39 +72,7 @@
             $("#diskon").val(row[1].innerHTML.replaceAll("%", ""));
             $("#deskripsi").val(row[2].innerHTML);
             $("#minimum_transaksi").val(row[3].innerHTML.replaceAll("Rp.", "").replaceAll(".", "").replaceAll(",", "."));
-            $("#expired_date").val(row[4].innerHTML);
-
-            // $.ajax({
-            //     url: base_url + "admin/diskon/get_by_id/" + edit_id,
-            //     method: "GET",
-            //     processData: false,
-            //     contentType: false,
-            //     success: function(res) {
-            //         $("#diskon").val(res.data.diskon);
-            //         $("#deskripsi").val(res.data.deskripsi);
-            //         $("#type").val(res.data.type);
-            //         $("#minimum_transaksi").val(res.data.minimum_transaksi ?? "");
-            //         $("#expired_date").val(res.data.expired_date);
-
-            //         const val = document.getElementById("type").value;
-            //         $("#minimum-transaksi-container").removeClass("d-none");
-            //         $("#produk-id-container").removeClass("d-none");
-            //         if (val == "0") {
-            //             $("#minimum-transaksi-container").addClass("d-none");
-
-            //             let $newOption = $("<option selected='selected'></option>")
-            //                 .val(res.data.produk_id)
-            //                 .text(row[4].innerHTML);
-            //             $("#produk_id").append($newOption).trigger('change');
-
-            //         } else {
-            //             $("#produk-id-container").addClass("d-none");
-            //         }
-            //     },
-            //     fail: function(xhr) {
-            //         toastr.danger(xhr.responseJSON.message)
-            //     }
-            // })
+            $("#expired_date").val(row[4].getElementsByTagName("div")[0].innerHTML);
             document.getElementById("submit").setAttribute("onclick", "editM()");
             $("#modalTitle").html("Edit Data");
         } else {
