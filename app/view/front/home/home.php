@@ -1,4 +1,4 @@
-<div class="card text-start" style="width : 100%">
+<div class="card text-start" style="width : 100%; background: rgba(255, 255, 255, 0.9);">
     <div class="card-header">
         Dashboard
     </div>
@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="card text-white bg-primary text-start">
+                <div class="card text-white bg-success text-start">
                     <div class="card-body">
                         <h4 class="card-title">Member</h4>
                         <p class="card-text"><?= $member ?></p>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <div class="card text-white bg-primary text-start">
+                <div class="card text-white bg-info text-start">
                     <div class="card-body">
                         <h4 class="card-title">Terjual</h4>
                         <p class="card-text"><?= $terjual ?></p>
@@ -31,7 +31,7 @@
             </div>
             <?php if ($this->is_admin()) { ?>
                 <div class="col-sm-3">
-                    <div class="card text-white bg-primary text-start">
+                    <div class="card text-white bg-warning text-start">
                         <div class="card-body">
                             <h4 class="card-title">Diskon</h4>
                             <p class="card-text"><?= $diskon ?></p>

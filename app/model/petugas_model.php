@@ -41,6 +41,8 @@ class Petugas_Model extends JI_Model
         $this->db->select_as("$this->tbl_as.status", "status");
         $this->db->select_as("$this->tbl_as.created_at", "created_at");
 
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
+
         $this->db->where("$this->tbl_as.role", "1", "AND", "=", 1, 1);
         $this->__search($data->search);
         $this->db->order_by($this->columns[$data->column], $data->dir);
@@ -50,7 +52,11 @@ class Petugas_Model extends JI_Model
 
     public function count()
     {
+        $this->db->from($this->tbl, $this->tbl_as);
         $this->db->select_as("COUNT(*)", "total");
+
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
+
         $this->db->where("role", "1", "AND", "=", 1, 1);
         return $this->db->get_first();
     }
@@ -59,6 +65,10 @@ class Petugas_Model extends JI_Model
     {
         $this->db->where("role", "1", "AND", "=");
         $this->db->where("id", $id, "AND", "=");
-        return $this->db->delete($this->tbl);
+        // return $this->db->delete($this->tbl);
+        return $this->db->update($this->tbl, [
+            "is_deleted" => 1,
+            "deleted_at" => date("Y-m-d h:i:s")
+        ]);
     }
 }

@@ -31,6 +31,7 @@ class Member_Model extends JI_Model{
     }
 
     public function read(stdClass $data){
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>");
         $this->__search($data->search);
         $this->db->order_by($this->columns[$data->column], $data->dir);
         $this->db->limit($data->start, $data->length);
@@ -38,15 +39,19 @@ class Member_Model extends JI_Model{
     }
 
     public function count(){
+        $this->db->from($this->tbl, $this->tbl_as);
         $this->db->select_as("COUNT(*)", "total");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); // is deleted
         return $this->db->get_first();
     }
 
     public function src($q){
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama)", "text");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); // is deleted
         $this->db->where_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama)", $q, "AND", "%like%");
         $this->db->where("expired_date", date("Y-m-d"), "AND", ">");
+        $this->db->where("status", 1, "AND", "=");
         $this->db->limit("0", "15");
         return $this->db->get();
     }

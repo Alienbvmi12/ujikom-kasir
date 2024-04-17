@@ -65,7 +65,7 @@ class Produk extends JI_Controller
             $this->__json_out([]);
         }
 
-        $last_id = $this->prm->get_last()->id;
+        $last_id = $this->prm->get_last()->id ?? "BRG0000";
         $id_num = intval(str_replace("BRG", "", strtoupper($last_id))) + 1;
         $cos_tam = "";
 

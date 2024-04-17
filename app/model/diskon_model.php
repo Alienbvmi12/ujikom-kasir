@@ -38,6 +38,8 @@ class Diskon_Model extends JI_Model{
         $this->db->select_as("$this->tbl_as.minimum_transaksi", "minimum_transaksi");
         $this->db->select_as("$this->tbl_as.expired_date", "expired_date");
 
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); // is deleted
+
         $this->__search($data->search);
         $this->db->order_by($this->columns[$data->column], $data->dir);
         $this->db->limit($data->start, $data->length);
@@ -45,13 +47,16 @@ class Diskon_Model extends JI_Model{
     }
 
     public function count(){
+        $this->db->from($this->tbl, $this->tbl_as);
         $this->db->select_as("COUNT(*)", "total");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>");
         return $this->db->get_first();
     }
 
     public function src_member($q){
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("$this->tbl_as.diskon", "diskon");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); // is deleted
         $this->db->where_as("$this->tbl_as.minimum_transaksi", $q, "AND", "<=");
         $this->db->where("$this->tbl_as.expired_date", date("Y-m-d"), "AND", ">");
         $this->db->order_by("$this->tbl_as.minimum_transaksi", "desc");

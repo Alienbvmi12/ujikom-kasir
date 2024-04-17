@@ -1,5 +1,5 @@
-@media print{
-    .print-button{
+@media print {
+    .print-button {
         display: none;
     }
 }

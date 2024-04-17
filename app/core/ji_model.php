@@ -114,7 +114,11 @@ class JI_Model extends \SENE_Model
     public function del($id)
     {
         $this->db->where("id", $id);
-        return $this->db->delete($this->tbl);
+        // return $this->db->delete($this->tbl);
+        return $this->db->update($this->tbl, [
+            "is_deleted" => 1,
+            "deleted_at" => date("Y-m-d h:i:s")
+        ]);
     }
 
     /**

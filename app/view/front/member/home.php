@@ -1,4 +1,4 @@
-<div class="card text-start w-100">
+<div class="card text-start w-100" style="width : 100%; background: rgba(255, 255, 255, 0.9);">
     <div class="card-header">
     </div>
     <div class="card-body">

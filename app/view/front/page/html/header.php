@@ -1,11 +1,10 @@
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">K-Sir App</a>
-        <button class="btn me-auto ms-5" type="button" onclick="$('#sidebar').toggleClass('d-none')">
+        <button class="btn me-auto" type="button" onclick="$('#sidebar').toggleClass('d-none')">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn dropdown-toggle text-white" type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa-regular fa-user"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="triggerId">

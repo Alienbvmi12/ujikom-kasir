@@ -30,6 +30,7 @@ class Produk_Model extends JI_Model
 
     public function read(stdClass $data)
     {
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
         $this->__search($data->search);
         $this->db->order_by($this->columns[$data->column], $data->dir);
         $this->db->limit($data->start, $data->length);
@@ -38,7 +39,9 @@ class Produk_Model extends JI_Model
 
     public function count()
     {
+        $this->db->from($this->tbl, $this->tbl_as);
         $this->db->select_as("COUNT(*)", "total");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
         return $this->db->get_first();
     }
 
@@ -53,6 +56,7 @@ class Produk_Model extends JI_Model
     {
         $this->db->select_as("$this->tbl_as.id", "id");
         $this->db->select_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama_produk)", "text");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
         $this->db->where_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama_produk)", $q, "AND", "%like%", 0, 0);
         $this->db->limit("0", "15");
         return $this->db->get();
@@ -62,6 +66,7 @@ class Produk_Model extends JI_Model
     {
         $this->db->select_as("CONCAT($this->tbl_as.id, '|', $this->tbl_as.harga)", "id");
         $this->db->select_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama_produk)", "text");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
         $this->db->where_as("CONCAT($this->tbl_as.id, ' - ', $this->tbl_as.nama_produk)", $q, "AND", "%like%", 0, 0);
         $this->db->limit("0", "15");
         return $this->db->get();
@@ -73,11 +78,13 @@ class Produk_Model extends JI_Model
         $this->db->select_as("$this->tbl_as.nama_produk", "produk");
         $this->db->select_as("$this->tbl_as.harga", "harga_satuan");
         $this->db->select_as("$this->tbl_as.stok", "stok");
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
         $this->db->where("$this->tbl_as.id", $id, "AND");
         return $this->db->get_first();
     }
 
     public function get(){
+        $this->db->where("$this->tbl_as.is_deleted", "1", "AND", "<>"); //Is not deleted data
         return $this->db->get();
     }
 }

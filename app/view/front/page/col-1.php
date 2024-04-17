@@ -11,6 +11,15 @@
     <?php $this->getAdditionalBefore(); ?>
     <?php $this->getAdditional(); ?>
     <?php $this->getAdditionalAfter(); ?>
+    <style>
+        body {
+            background: url('<?=base_url("skin/img/bekgron2.jpg")?>');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            --webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+    </style>
 </head>
 
 <body>
@@ -18,13 +27,16 @@
     <?php $this->getJsReady(); ?>
     <header>
         <!-- place navbar here -->
-        <?php $this->getThemeElement('page/html/header', $__forward) ?>
+
     </header>
     <main>
-        <div class="d-flex flex-row">
-            <?php $this->getThemeElement('page/html/sidebar', $__forward)?>
-            <div class="w-100 container py-4">
-                <?php $this->getThemeContent() ?>
+        <div class="d-flex flex-row" style="align-items:stretch; min-height:100vh">
+            <?php $this->getThemeElement('page/html/sidebar', $__forward) ?>
+            <div class="w-100">
+                <?php $this->getThemeElement('page/html/header', $__forward) ?>
+                <div class="container py-4">
+                    <?php $this->getThemeContent() ?>
+                </div>
             </div>
         </div>
     </main>

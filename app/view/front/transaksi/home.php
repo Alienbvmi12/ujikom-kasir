@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="card">
+    <div class="card" style="width : 100%; background: rgba(255, 255, 255, 0.9);">
         <div class="card-header text-muted"></div>
         <div class="card-body">
             <h3>Transaksi</h3>
@@ -69,6 +69,34 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="mb-3">
+                                        <label for="" class="form-label">Total</label>
+                                        <input type="text" disabled readonly class="form-control" name="subtotal_trans" id="subtotal_trans" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Diskon</label>
+                                        <input type="text" disabled readonly class="form-control" name="diskon" id="diskon" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Bayar</label>
+                                        <input type="number" class="form-control" name="bayar" id="bayar" oninput="countKembalian()" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 px-2 pb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body" style="text-align: left">
+                                            <b style="font-size: 25px">Grand Total</b><br>
+                                            <b style="font-size: 50px" id="total-view">0</b><br>
+                                            <input type="hidden" disabled readonly class="form-control" name="total" id="total" />
+                                            <b style="font-size: 20px">Kembalian</b><br>
+                                            <b style="font-size: 20px" id="kembalian-view">0</b><br>
+                                            <input type="hidden" disabled readonly class="form-control" name="kembalian" id="kembalian" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
                                         <label for="" class="form-label">Subtotal</label>
                                         <input type="text" disabled readonly class="form-control" name="subtotal_trans" id="subtotal_trans" />
                                     </div>
@@ -101,11 +129,13 @@
                                         <input type="text" disabled readonly class="form-control" name="kembalian" id="kembalian" />
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row">
                                 <div class="col-sm-12 d-flex justify-content-end">
-                                    <button id="transaksi-baru" class="btn btn-warning" onclick="location.reload()">Transaksi Baru</button>
-                                    <button id="checkout" class="btn btn-success mx-2" onclick="submitTransaksi()">Checkout</button>
+                                    <button id="dashboard" class="btn btn-info me-2" onclick="location.href='<?= base_url()?>petugas/diskon'">List Diskon</button>
+                                    <button id="dashboard" class="btn btn-primary me-2" onclick="location.href='<?= base_url()?>petugas/member'">Member</button>
+                                    <button id="transaksi-baru" class="btn btn-warning me-2" onclick="location.reload()">Transaksi Baru</button>
+                                    <button id="checkout" class="btn btn-success me-2" onclick="submitTransaksi()">Checkout</button>
                                 </div>
                             </div>
                         </div>

@@ -50,6 +50,7 @@ class Penjualan_Model extends JI_Model
     {
         $this->db->from($this->tbl, $this->tbl_as);
         $this->db->select_as("COUNT(*)", "total");
+
         $this->db->where("$this->tbl_as.tanggal_transaksi", $from, "AND", ">=");
         $this->db->where("$this->tbl_as.tanggal_transaksi", $until, "AND", "<=");
         return $this->db->get_first();
@@ -59,6 +60,7 @@ class Penjualan_Model extends JI_Model
     {
         $this->db->from($this->tbl, $this->tbl_as);
         $this->db->select_as("$this->tbl_as.tanggal_transaksi", "tanggal_transaksi");
+
         $this->db->where("$this->tbl_as.tanggal_transaksi", $from, "AND", ">=");
         $this->db->where("$this->tbl_as.tanggal_transaksi", $until, "AND", "<=");
         $this->db->group_by("month($this->tbl_as.tanggal_transaksi)");
@@ -78,6 +80,7 @@ class Penjualan_Model extends JI_Model
         $this->db->select_as("CONCAT($this->tbl_as.user_id, ' - ' , $this->tbl3_as.nama)", "kasir");
         $this->db->join($this->tbl2, $this->tbl2_as, "transaksi_id", $this->tbl_as, "id", "left");
         $this->db->join($this->tbl3, $this->tbl3_as, "id", $this->tbl_as, "user_id", "left");
+
         $this->db->where("$this->tbl_as.tanggal_transaksi", $from, "AND", ">=");
         $this->db->where("$this->tbl_as.tanggal_transaksi", $until, "AND", "<=");
 
@@ -97,6 +100,7 @@ class Penjualan_Model extends JI_Model
         // $this->db->select_as("SUM($this->tbl2_as.harga_satuan * $this->tbl2_as.qty)", "omset");
         $this->db->select_as("SUM($this->tbl_as.subtotal_harga - if($this->tbl_as.diskon is null, '0', ($this->tbl_as.subtotal_harga * ( $this->tbl_as.diskon / 100))))", "omset");
         // $this->db->join($this->tbl2, $this->tbl2_as, "transaksi_id", $this->tbl_as, "id", "inner");
+
         $this->db->where("$this->tbl_as.tanggal_transaksi", $from, "AND", ">=");
         $this->db->where("$this->tbl_as.tanggal_transaksi", $until, "AND", "<=");
 

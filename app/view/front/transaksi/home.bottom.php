@@ -59,14 +59,14 @@
                     title: "Harga",
                     data: "harga_satuan",
                     render: function(data, type, row, meta) {
-                        return "Rp." + $.number(parseFloat(data), 2, ",", ".");
+                        return _rupiah(parseFloat(data));
                     }
                 },
                 {
                     title: "Total",
                     render: function(data, type, row, meta) {
                         let subtotal = parseInt(row.qty) * parseFloat(row.harga_satuan);
-                        return "Rp." + $.number(subtotal, 2, ",", ".");;
+                        return _rupiah(subtotal);
                     }
                 },
                 {
@@ -81,11 +81,11 @@
     });
 
     function _rupiah(num) {
-        return "Rp." + $.number(num, 2, ",", ".");
+        return "Rp" + $.number(num, 2, ",", ".");
     }
 
     function _decode_rupiah(numStr) {
-        return numStr.replaceAll("Rp.", "").replaceAll(".", "").replaceAll(",", ".");
+        return numStr.replaceAll("Rp", "").replaceAll(".", "").replaceAll(",", ".");
     }
 
     function setMember(context) {
@@ -94,16 +94,16 @@
     }
 
     function showHarga(context) {
-        let harga = "Rp." + $.number(context.value.split("|")[1], 2, ",", ".");
+        let harga = _rupiah(context.value.split("|")[1]);
         $("#harga_satuan").val(harga);
         countSubtotalRow(document.getElementById("qty"));
     }
 
     function countSubtotalRow(context) {
         let qty = parseInt(context.value == "" ? 0 : context.value);
-        let hrgVal = $("#harga_satuan").val().replaceAll("Rp.", "").replaceAll(".", "").replaceAll(",", ".");
+        let hrgVal = _decode_rupiah($("#harga_satuan").val());
         let harga = parseFloat(hrgVal == "" ? 0 : hrgVal);
-        let subtotal = "Rp." + $.number(harga * qty, 2, ",", ".");
+        let subtotal = _rupiah(harga * qty);
         $("#subtotal").val(subtotal);
     }
 
@@ -210,7 +210,7 @@
             subtotal += row_total;
         });
         $("#subtotal_trans").val(
-            "Rp." + $.number(subtotal, 2, ",", ".")
+            _rupiah(subtotal)
         );
         info_transaksi.subtotal = subtotal;
     }
@@ -243,6 +243,7 @@
         console.log(diskon);
         let total = info_transaksi.subtotal - diskon;
         $("#total").val(_rupiah(total));
+        $("#total-view").html(_rupiah(total));
         info_transaksi.total = total;
     }
 
@@ -250,6 +251,15 @@
         let bayar = parseFloat($("#bayar").val() == "" ? 0 : $("#bayar").val());
         let kembalian = bayar - info_transaksi.total;
         $("#kembalian").val(_rupiah(kembalian));
+        $("#kembalian-view").html(_rupiah(kembalian));
+        if (kembalian < 0) {
+            $("#kembalian-view").removeClass("text-success");
+            $("#kembalian-view").addClass("text-danger");
+        } else {
+            $("#kembalian-view").removeClass("text-danger");
+            $("#kembalian-view").addClass("text-success");
+
+        }
         info_transaksi.bayar = bayar;
         info_transaksi.kembalian = kembalian;
     }
@@ -291,8 +301,7 @@
                 if (response.status >= 200 && response.status < 300) {
                     toastr.success("<b>Success</b> " + "Transaksi Sukses!!");
                     location.href = response.data.redirect_url;
-                }
-                else{
+                } else {
                     toastr.warning("<b>Gagal</b> " + response.message);
                 }
             },

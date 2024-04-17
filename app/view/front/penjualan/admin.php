@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="card">
+    <div class="card" style="width : 100%; background: rgba(255, 255, 255, 0.9);">
         <div class="card-header text-muted"></div>
         <div class="card-body">
             <h3>Laporan Penjualan</h3>

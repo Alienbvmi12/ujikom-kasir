@@ -22,7 +22,7 @@ class Transaksi extends JI_Controller
 
         $this->putJsReady("transaksi/home.bottom", $data);
         $this->putThemeContent("transaksi/home", $data);
-        $this->loadLayout("col-1", $data);
+        $this->loadLayout("transaksi", $data);
         $this->render();
     }
 

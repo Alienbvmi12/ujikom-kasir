@@ -14,6 +14,9 @@
     <button type="button" name="" id="" onclick="print()" class="btn btn-primary print-button">
         Print
     </button>
+    <button type="button" name="" id="" onclick="excel()" class="btn btn-success print-button">
+        Excel
+    </button>
     <button type="button" name="" id="" onclick="history.back()" class="btn btn-warning print-button">
         Kembali
     </button>
@@ -31,7 +34,7 @@
             <?php
             foreach ($produk as $data) {
             ?>
-                <tr <?= $data->stok <= 10 ? 'class="table-danger"': ''?>>
+                <tr <?= $data->stok <= 10 ? 'class="table-danger"' : '' ?>>
                     <td><?= $data->id ?></td>
                     <td><?= $data->nama_produk ?></td>
                     <td>Rp.<script>
@@ -49,4 +52,43 @@
             ?>
         </tbody>
     </table>
+    <table class="mt-4 table table-bordered table-striped d-none" id="tabel">
+        <thead>
+            <tr>
+                <th colspan="5"><h2 style="text-align: center">Laporan Stok Produk <?= date("Y-m-d") ?></h2></th>
+            </tr>
+            <tr class="table-dark">
+                <th>Kode Barang (ID)</th>
+                <th>Nama Produk</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Nilai Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($produk as $data) {
+            ?>
+                <tr <?= $data->stok <= 10 ? 'class="table-danger"' : '' ?>>
+                    <td><?= $data->id ?></td>
+                    <td><?= $data->nama_produk ?></td>
+                    <td><?= floatval($data->harga) ?></td>
+                    </td>
+                    <td><?= $data->stok ?></td>
+                    <td><?= floatval($data->harga * $data->stok) ?>
+                    </td>
+                </tr>
+            <?php
+            }
+            ?>
+        </tbody>
+    </table>
 </div>
+
+<script>
+    function excel() {
+        var tbl = document.getElementById("tabel");
+        var xlsx = XLSX.utils.table_to_book(tbl);
+        XLSX.writeFile(xlsx, "laporan-stok.xlsx")
+    }
+</script>
