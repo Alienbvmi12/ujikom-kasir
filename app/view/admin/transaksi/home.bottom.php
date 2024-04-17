@@ -8,7 +8,7 @@
         kembalian: 0
     };
     let member = "";
-    const kasir = "<?= $sess->user->id ?>";
+    const kasir = "<?= $sess->admin->id ?>";
     const base_url = "<?= base_url() ?>";
     let datable;
     $(document).ready(function() {
@@ -18,7 +18,7 @@
         $("#produk_id").select2({
             theme: "bootstrap-5",
             ajax: {
-                url: base_url + "transaksi/__api_produk/",
+                url: base_url + "admin/transaksi/__api_produk/",
                 processResults: function(data) {
                     return {
                         results: data.data
@@ -29,7 +29,7 @@
         $("#member_id").select2({
             theme: "bootstrap-5",
             ajax: {
-                url: base_url + "transaksi/__api_member/",
+                url: base_url + "admin/transaksi/__api_member/",
                 processResults: function(data) {
                     return {
                         results: data.data
@@ -121,7 +121,7 @@
 
         $.ajax({
             type: "get",
-            url: base_url + "transaksi/__api_produk_add/" + produk_id + "/",
+            url: base_url + "admin/transaksi/__api_produk_add/" + produk_id + "/",
             dataType: false,
             processData: false,
             success: function(response) {
@@ -220,7 +220,7 @@
             let subtotal = info_transaksi.subtotal;
             $.ajax({
                 method: "GET",
-                url: base_url + "transaksi/__api_diskon_transaksi/",
+                url: base_url + "admin/transaksi/__api_diskon_transaksi/",
                 data: "nominal=" + subtotal,
                 dataType: false,
                 processData: false,
@@ -280,20 +280,20 @@
 
         let transaksi = {
             transaksi: {
-                user_id: kasir,
+                admin_id: kasir,
                 member_id: $("#member_id").val() == "" ? null : $("#member_id").val(),
                 subtotal_harga: info_transaksi.subtotal,
                 total_harga: info_transaksi.total,
                 cash: info_transaksi.bayar,
-                diskon_id: info_transaksi.diskon.id == undefined ? null : info_transaksi.diskon.id,
-                diskon: info_transaksi.diskon.diskon == undefined ? null : info_transaksi.diskon.diskon,
+                diskon_id: info_transaksi.diskon.id == undefined ? null: info_transaksi.diskon.id,
+                diskon: info_transaksi.diskon.diskon == undefined ? null: info_transaksi.diskon.diskon,
             },
             transaksi_detail: keranjang
         }
 
         $.ajax({
             method: "POST",
-            url: base_url + "transaksi/process/",
+            url: base_url + "admin/transaksi/process/",
             data: JSON.stringify(transaksi),
             dataType: "json",
             processData: false,

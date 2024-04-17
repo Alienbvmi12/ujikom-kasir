@@ -13,7 +13,7 @@ class Member extends JI_Controller
         $data = $this->__init();
         $data["active"] = "member";
 
-        if (!$this->is_login() or $this->is_admin()) {
+        if (!$this->user_login) {
             redir(base_url());
         }
 
@@ -60,27 +60,14 @@ class Member extends JI_Controller
         return $id_member;
     }
 
-    public function card($id)
-    {
-        $data = $this->__init();
-
-        if (!$this->is_login() or $this->is_admin()) {
-            redir(base_url());
-        }
-
-        $data["active"] = "member";
-        $data["member"] = $this->mm->id($id);
-
-        $this->putThemeContent("laporan/member", $data);
-        $this->loadLayout("plain", $data);
-        $this->render();
-    }
-
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() or $this->is_admin()) {
-            redir(base_url());
+        if (!$this->user_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $req = $this->__datatablesRequest();
@@ -99,8 +86,11 @@ class Member extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or $this->is_admin()) {
-            redir(base_url());
+        if (!$this->user_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $vald = $this->mm->validate($req, "insert", [
@@ -140,8 +130,11 @@ class Member extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or $this->is_admin()) {
-            redir(base_url());
+        if (!$this->user_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $vald = $this->mm->validate($req, "update", [
@@ -179,7 +172,7 @@ class Member extends JI_Controller
     public function inactivate($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() or $this->is_admin()) {
+        if (!$this->user_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -210,7 +203,7 @@ class Member extends JI_Controller
     public function activate($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() or $this->is_admin()) {
+        if (!$this->user_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -241,7 +234,7 @@ class Member extends JI_Controller
     public function perpanjang($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() or $this->is_admin()) {
+        if (!$this->user_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";

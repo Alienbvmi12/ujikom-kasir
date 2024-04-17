@@ -3,7 +3,7 @@
     let table;
     let edit_id = 0;
     $(document).ready(function() {
-        let request_url = base_url + "petugas/diskon/read/";
+        let request_url = base_url + "diskon/read/";
         table = $("#datatable").DataTable({
             serverSide: true,
             ajax: {

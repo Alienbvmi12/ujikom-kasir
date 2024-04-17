@@ -9,13 +9,14 @@ class Home extends JI_Controller
         $this->load("member_model", "mm");
         $this->load("transaksi_model", "tm");
         $this->load("diskon_model", "dm");
+        $this->setTheme("admin");
     }
     public function index()
     {
         $data = $this->__init();
         
-        if(!$this->user_login){
-            redir(base_url("login"));
+        if(!$this->admin_login){
+            redir(base_url_admin("login/"));
         }
 
         $data["active"] = "dashboard";

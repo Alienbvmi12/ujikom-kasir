@@ -5,14 +5,15 @@ class Login extends JI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load("user_model", "user");
+        $this->load("admin_model", "admin");
+        $this->setTheme("admin");
     }
 
     public function index()
     {
         $data = array();
-        if ($this->user_login) {
-            redir(base_url());
+        if ($this->admin_login) {
+            redir(base_url_admin());
         }
         $this->putJSReady("login/home.bottom", $data);
         $this->putThemeContent("login/home");
@@ -25,14 +26,14 @@ class Login extends JI_Controller
         $c_sess = $this->__init();
         $input = $_POST;
 
-        if ($this->user_login) {
+        if ($this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Sudah login";
             $this->__json_out([]);
         }
 
-        $vald = $this->user->validate($input, "read", [
+        $vald = $this->admin->validate($input, "read", [
             "email" => ["required"],
             "password" => ["required"]
         ]);
@@ -45,7 +46,7 @@ class Login extends JI_Controller
             die;
         }
 
-        $user = $this->user->auth($input["email"]);
+        $user = $this->admin->auth($input["email"]);
 
         if (isset($user->id)) {
             if ($user->status == 0) {
@@ -57,7 +58,7 @@ class Login extends JI_Controller
 
             if (md5($input["password"]) === $user->password) {
                 $user->password = password_hash($input["password"], PASSWORD_BCRYPT);
-                $this->user->update($user->id, ["password" => $user->password]);
+                $this->admin->update($user->id, ["password" => $user->password]);
             }
 
             if (!password_verify($input["password"], $user->password)) {
@@ -69,7 +70,7 @@ class Login extends JI_Controller
             }
 
             $sess = $c_sess["sess"];
-            $sess->user = $user;
+            $sess->admin = $user;
             $this->setKey($sess);
             http_response_code(200);
             $this->status = 200;

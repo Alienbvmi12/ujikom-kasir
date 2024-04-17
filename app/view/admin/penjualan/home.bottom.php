@@ -32,7 +32,14 @@
                 },
                 {
                     title: "Kasir",
-                    data: "kasir"
+                    data: "kasir",
+                    render: function(data, type, row) {
+                        if (data != null) {
+                            return data;
+                        } else {
+                            return row.kasir2
+                        }
+                    }
                 },
                 {
                     title: "Aksi",
@@ -90,7 +97,7 @@
         if (from == "" || until == "") {
             toastr.warning("Lengkapi rentang tanggal terlebih dahulu!!");
         } else {
-            location.href = base_url + "laporan/penjualan/"+type+"/" + from + "/" + until + "/"
+            location.href = base_url + "laporan/penjualan/" + type + "/" + from + "/" + until + "/"
         }
     }
 </script>

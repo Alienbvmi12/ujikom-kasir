@@ -3,7 +3,7 @@
     let table;
     let table2;
     let edit_id = 0;
-    let request_url = base_url + "petugas/penjualan/read/";
+    let request_url = base_url + "penjualan/read/";
     $(document).ready(function() {
         table = $("#datatable").DataTable({
             serverSide: true,
@@ -31,7 +31,16 @@
                 },
                 {
                     title: "Kasir",
-                    data: "kasir"
+                    data: "kasir",
+                    render: function(data, type, row) {
+                        console.log(data);
+                        if(data != null){
+                            return data;
+                        }
+                        else{
+                            return row.kasir2
+                        }
+                    }
                 },
                 {
                     title: "Aksi",
@@ -49,7 +58,7 @@
         if (from == "" || until == "") {
             toastr.warning("Lengkapi rentang tanggal terlebih dahulu!!");
         } else {
-            table.ajax.url(base_url + "petugas/penjualan/read/" + from + "/" + until + "/").load();
+            table.ajax.url(base_url + "penjualan/read/" + from + "/" + until + "/").load();
         }
     }
 </script>

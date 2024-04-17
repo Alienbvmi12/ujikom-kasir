@@ -28,10 +28,10 @@
                     </div>
                 </div>
 
-                <button type="button" class="mb-4 btn btn-primary" onclick="printLap('transaksi')" href="<?= base_url(); ?>/laporan/penjualan/transaksi">
+                <button type="button" class="mb-4 btn btn-primary" onclick="printLap('transaksi')" href="<?= base_url(); ?>admin/laporan/penjualan/transaksi">
                     Print Laporan Transaksi
                 </button>
-                <button type="button" class="mb-4 btn btn-info" onclick="printLap('omset')" href="<?= base_url(); ?>/laporan/penjualan/omset">
+                <button type="button" class="mb-4 btn btn-info" onclick="printLap('omset')" href="<?= base_url(); ?>admin/laporan/penjualan/omset">
                     Print Laporan Omset
                 </button>
                 <table id="datatable" class="table table-striped table-hover table-borderless table-primary align-middle">

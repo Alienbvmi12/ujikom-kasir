@@ -6,13 +6,14 @@ class Produk extends JI_Controller
     {
         parent::__construct();
         $this->load("produk_model", "prm");
+        $this->setTheme("admin");
     }
 
     public function index()
     {
         $data = $this->__init();
-        if (!$this->user_login) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
 
         $data["active"] = "produk";
@@ -26,7 +27,7 @@ class Produk extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -48,7 +49,7 @@ class Produk extends JI_Controller
         $data = $this->__init();
         $req = $_POST;
 
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -107,7 +108,7 @@ class Produk extends JI_Controller
     public function delete($id)
     {
         $data = $this->__init();
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -140,7 +141,7 @@ class Produk extends JI_Controller
         $data = $this->__init();
         $req = $_POST;
 
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";

@@ -6,15 +6,16 @@ class Petugas extends JI_Controller
     {
         parent::__construct();
         $this->load("petugas_model", "pm");
+        $this->setTheme("admin");
     }
 
     public function index()
     {
         $data = $this->__init();
-        if (!$this->is_login() OR !$this->is_admin()) {
+        if (!$this->admin_login) {
             redir(base_url());
         }
-        
+
         $data["active"] = "petugas";
 
         $this->putJSReady("petugas/home.bottom", $data);
@@ -26,8 +27,11 @@ class Petugas extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() AND !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
         $req = $this->__datatablesRequest();
         $dt = $this->pm->read($req);
@@ -45,7 +49,7 @@ class Petugas extends JI_Controller
         $data = $this->__init();
         $req = $_POST;
 
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -79,7 +83,6 @@ class Petugas extends JI_Controller
 
         unset($req["konfirmasi_password"]);
         try {
-            $req["role"] = "1";
             $this->pm->set($req);
             http_response_code(200);
             $this->status = 200;
@@ -96,14 +99,14 @@ class Petugas extends JI_Controller
     public function delete($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
             $this->__json_out([]);
         }
 
-        if($id == "" or $id == "0" or $id == null){
+        if ($id == "" or $id == "0" or $id == null) {
             http_response_code(422);
             $this->status = 422;
             $this->message = "ID Undefined";
@@ -129,7 +132,7 @@ class Petugas extends JI_Controller
         $data = $this->__init();
         $req = $_POST;
 
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -172,15 +175,13 @@ class Petugas extends JI_Controller
             }
 
             $req["password"] = password_hash($req["password"], PASSWORD_BCRYPT);
-        }
-        else{
+        } else {
             unset($req["password"]);
         }
 
         unset($req["konfirmasi_password"]);
 
         try {
-            $req["role"] = "1";
             $this->pm->update($req["id"], $req);
             http_response_code(200);
             $this->status = 200;

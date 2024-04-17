@@ -8,6 +8,8 @@ class Penjualan_Model extends JI_Model
     public $tbl2_as = "trsd";
     public $tbl3 = "user";
     public $tbl3_as = "ussr";
+    public $tbl4 = "admin";
+    public $tbl4_as = "adm";
     public $columns = [
         "id",
         "tanggal_transaksi",
@@ -78,8 +80,10 @@ class Penjualan_Model extends JI_Model
         // $this->db->select_as("SUM($this->tbl2_as.harga_satuan * $this->tbl2_as.qty)", "total");
         $this->db->select_as("$this->tbl_as.subtotal_harga - ($this->tbl_as.subtotal_harga * (if($this->tbl_as.diskon is null, 0, $this->tbl_as.diskon) / 100))", "total");
         $this->db->select_as("CONCAT($this->tbl_as.user_id, ' - ' , $this->tbl3_as.nama)", "kasir");
+        $this->db->select_as("CONCAT($this->tbl_as.admin_id, 'A - ' , $this->tbl4_as.nama)", "kasir2");
         $this->db->join($this->tbl2, $this->tbl2_as, "transaksi_id", $this->tbl_as, "id", "left");
         $this->db->join($this->tbl3, $this->tbl3_as, "id", $this->tbl_as, "user_id", "left");
+        $this->db->join($this->tbl4, $this->tbl4_as, "id", $this->tbl_as, "admin_id", "left");
 
         $this->db->where("$this->tbl_as.tanggal_transaksi", $from, "AND", ">=");
         $this->db->where("$this->tbl_as.tanggal_transaksi", $until, "AND", "<=");

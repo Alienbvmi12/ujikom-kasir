@@ -9,6 +9,7 @@ class Transaksi extends JI_Controller
         $this->load("produk_model", "pm");
         $this->load("member_model", "mm");
         $this->load("diskon_model", "dm");
+        $this->setTheme("admin");
     }
 
     public function index()
@@ -16,8 +17,8 @@ class Transaksi extends JI_Controller
         $data = $this->__init();
         $data["active"] = "transaksi";
 
-        if (!$this->user_login) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
 
         $this->putJsReady("transaksi/home.bottom", $data);
@@ -30,7 +31,7 @@ class Transaksi extends JI_Controller
     {
         $data = $this->__init();
 
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -48,7 +49,7 @@ class Transaksi extends JI_Controller
 
         $vald = $this->tm->validate($input["transaksi"], "insert", [
             "tanggal_transaksi" => ["required"],
-            "user_id" => ["required"],
+            "admin_id" => ["required"],
             "subtotal_harga" => ["required", "max:13"],
             "total_harga" => ["required", "max:13"],
             "cash" => ["required", "max:13"]
@@ -116,7 +117,7 @@ class Transaksi extends JI_Controller
             $this->status = 200;
             $this->message = "Transaksi Sukses";
             $this->__json_out([
-                "redirect_url" => base_url() . "laporan/struk/" . $no_transaksi . "/"
+                "redirect_url" => base_url() . "admin/laporan/struk/" . $no_transaksi . "/"
             ]);
         } catch (Exception $ee) {
             http_response_code(200);
@@ -154,7 +155,7 @@ class Transaksi extends JI_Controller
     public function __api_produk()
     {
         $data = $this->__init();
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -173,7 +174,7 @@ class Transaksi extends JI_Controller
     public function __api_member()
     {
         $data = $this->__init();
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -192,7 +193,7 @@ class Transaksi extends JI_Controller
     public function __api_produk_add($id = "")
     {
         $data = $this->__init();
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -217,7 +218,7 @@ class Transaksi extends JI_Controller
     public function __api_diskon_transaksi()
     {
         $data = $this->__init();
-        if (!$this->user_login) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";

@@ -6,6 +6,7 @@ class Member extends JI_Controller
     {
         parent::__construct();
         $this->load("member_model", "mm");
+        $this->setTheme("admin");
     }
 
     public function index()
@@ -13,12 +14,12 @@ class Member extends JI_Controller
         $data = $this->__init();
         $data["active"] = "member";
 
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
 
-        $this->putJsReady("member/admin.bottom", $data);
-        $this->putThemeContent("member/admin", $data);
+        $this->putJsReady("member/home.bottom", $data);
+        $this->putThemeContent("member/home", $data);
         $this->loadLayout("col-1", $data);
         $this->render();
     }
@@ -63,8 +64,11 @@ class Member extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $req = $this->__datatablesRequest();
@@ -83,8 +87,11 @@ class Member extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $vald = $this->mm->validate($req, "insert", [
@@ -124,8 +131,11 @@ class Member extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
 
         $vald = $this->mm->validate($req, "update", [
@@ -162,7 +172,7 @@ class Member extends JI_Controller
     public function delete($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() and !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";

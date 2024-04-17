@@ -8,6 +8,7 @@ class Diskon extends JI_Controller
         $this->load("diskon_model", "dm");
         $this->load("produk_model", "prm");
         $this->lib("sene_json_engine", "sene_json");
+        $this->setTheme("admin");
     }
 
     public function index()
@@ -15,12 +16,12 @@ class Diskon extends JI_Controller
         $data = $this->__init();
         $data["active"] = "diskon";
 
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url("admin"));
         }
 
-        $this->putJsReady("diskon/admin.bottom", $data);
-        $this->putThemeContent("diskon/admin", $data);
+        $this->putJsReady("diskon/home.bottom", $data);
+        $this->putThemeContent("diskon/home", $data);
         $this->loadLayout("col-1", $data);
         $this->render();
     }
@@ -28,7 +29,7 @@ class Diskon extends JI_Controller
     public function search()
     {
         $data = $this->__init();
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -47,7 +48,7 @@ class Diskon extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -70,7 +71,7 @@ class Diskon extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -117,7 +118,7 @@ class Diskon extends JI_Controller
     {
         $data = $this->__init();
         $req = $_POST;
-        if (!$this->is_login() AND !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -156,7 +157,7 @@ class Diskon extends JI_Controller
     public function delete($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() and !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -187,7 +188,7 @@ class Diskon extends JI_Controller
     public function get_by_id($id)
     {
         $data = $this->__init();
-        if (!$this->is_login() and !$this->is_admin()) {
+        if (!$this->admin_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";

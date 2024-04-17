@@ -11,7 +11,7 @@ class Penjualan extends JI_Controller
     public function index()
     {
         $data = $this->__init();
-        if (!$this->is_login() or $this->is_admin()) {
+        if (!$this->user_login ) {
             redir(base_url());
         }
         $data["active"] = "laporan";
@@ -25,8 +25,11 @@ class Penjualan extends JI_Controller
     public function read($from = "", $until = "")
     {
         $data = $this->__init();
-        if (!$this->is_login() or $this->is_admin()) {
-            redir(base_url());
+        if (!$this->user_login ) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
         $req = $this->__datatablesRequest();
         if ($from == "" || $until == "") {

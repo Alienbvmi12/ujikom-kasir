@@ -42,7 +42,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="" class="form-label">Kasir</label>
-                                <input type="text" class="form-control" value="<?= $sess->user->id . ' - ' . $sess->user->nama ?>" name="kasir" id="kasir" disabled readonly />
+                                <input type="text" class="form-control" value="<?= $sess->admin->id . ' - ' . $sess->admin->nama ?>" name="kasir" id="kasir" disabled readonly />
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Member (Opsional)</label>
@@ -132,8 +132,8 @@
                             </div> -->
                             <div class="row">
                                 <div class="col-sm-12 d-flex justify-content-end">
-                                    <button id="dashboard" class="btn btn-info me-2" onclick="location.href='<?= base_url()?>diskon'">List Diskon</button>
-                                    <button id="dashboard" class="btn btn-primary me-2" onclick="location.href='<?= base_url()?>member'">Member</button>
+                                    <button id="dashboard" class="btn btn-info me-2" onclick="location.href='<?= base_url()?>admin/diskon'">List Diskon</button>
+                                    <button id="dashboard" class="btn btn-primary me-2" onclick="location.href='<?= base_url()?>admin/member'">Member</button>
                                     <button id="transaksi-baru" class="btn btn-warning me-2" onclick="location.reload()">Transaksi Baru</button>
                                     <button id="checkout" class="btn btn-success me-2" onclick="submitTransaksi()">Checkout</button>
                                 </div>

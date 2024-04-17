@@ -14,6 +14,8 @@ class Transaksi_Model extends JI_Model
     public $tbl5_as = "ussr";
     public $tbl6 = "member";
     public $tbl6_as = "member";
+    public $tbl7 = "admin";
+    public $tbl7_as = "adm";
 
     public function __construct()
     {
@@ -47,6 +49,8 @@ class Transaksi_Model extends JI_Model
         $this->db->select_as("$this->tbl_as.tanggal_transaksi", "tanggal_transaksi");
         $this->db->select_as("$this->tbl_as.user_id", "user_id");
         $this->db->select_as("$this->tbl5_as.nama", "user_nama");
+        $this->db->select_as("$this->tbl_as.admin_id", "admin_id");
+        $this->db->select_as("$this->tbl7_as.nama", "admin_nama");
         $this->db->select_as("$this->tbl_as.member_id", "member_id");
         $this->db->select_as("$this->tbl6_as.nama", "member_nama");
         $this->db->select_as("$this->tbl_as.diskon_id", "diskon_id");
@@ -54,6 +58,7 @@ class Transaksi_Model extends JI_Model
         $this->db->select_as("$this->tbl_as.cash", "cash");
         $this->db->select_as("$this->tbl4_as.minimum_transaksi", "minimum_transaksi");
         $this->db->join($this->tbl5, $this->tbl5_as, "id", $this->tbl_as, "user_id", "left");
+        $this->db->join($this->tbl7, $this->tbl7_as, "id", $this->tbl_as, "admin_id", "left");
         $this->db->join($this->tbl6, $this->tbl6_as, "id", $this->tbl_as, "member_id", "left");
         $this->db->join($this->tbl4, $this->tbl4_as, "id", $this->tbl_as, "diskon_id", "left");
         $this->db->where("$this->tbl_as.id", $id);

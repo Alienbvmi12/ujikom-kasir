@@ -6,18 +6,19 @@ class Penjualan extends JI_Controller
     {
         parent::__construct();
         $this->load("penjualan_model", "pnm");
+        $this->setTheme("admin");
     }
 
     public function index()
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
         $data["active"] = "laporan";
 
-        $this->putJSReady("penjualan/admin.bottom", $data);
-        $this->putThemeContent("penjualan/admin", $data);
+        $this->putJSReady("penjualan/home.bottom", $data);
+        $this->putThemeContent("penjualan/home", $data);
         $this->loadLayout("col-1", $data);
         $this->render();
     }
@@ -25,8 +26,11 @@ class Penjualan extends JI_Controller
     public function read($from = "", $until = "")
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
         $req = $this->__datatablesRequest();
         if ($from == "" || $until == "") {
@@ -52,8 +56,11 @@ class Penjualan extends JI_Controller
     public function omset($from = "", $until = "")
     {
         $data = $this->__init();
-        if (!$this->is_login() or !$this->is_admin()) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            http_response_code(401);
+            $this->status = 401;
+            $this->message = "Unauthorized";
+            $this->__json_out([]);
         }
         $req = $this->__datatablesRequest();
         if ($from == "" || $until == "") {

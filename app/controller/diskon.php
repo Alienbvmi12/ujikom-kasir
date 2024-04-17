@@ -15,7 +15,7 @@ class Diskon extends JI_Controller
         $data = $this->__init();
         $data["active"] = "diskon";
 
-        if (!$this->is_login() or $this->is_admin()) {
+        if (!$this->user_login) {
             redir(base_url());
         }
 
@@ -28,7 +28,7 @@ class Diskon extends JI_Controller
     public function search()
     {
         $data = $this->__init();
-        if (!$this->is_login() AND $this->is_admin()) {
+        if (!$this->user_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";
@@ -47,7 +47,7 @@ class Diskon extends JI_Controller
     public function read()
     {
         $data = $this->__init();
-        if (!$this->is_login() AND $this->is_admin()) {
+        if (!$this->user_login) {
             http_response_code(401);
             $this->status = 401;
             $this->message = "Unauthorized";

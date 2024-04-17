@@ -8,14 +8,15 @@ class Laporan extends JI_Controller
         $this->load("penjualan_model", "pjm");
         $this->load("transaksi_model", "tm");
         $this->load("produk_model", "pm");
+        $this->setTheme("admin");
     }
 
     public function stok()
     {
         $data = $this->__init();
 
-        if (!$this->user_login) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
 
         $data["produk"] = $this->pm->get();
@@ -29,8 +30,8 @@ class Laporan extends JI_Controller
     {
         $data = $this->__init();
 
-        if (!$this->user_login) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
 
         $data["transaksi_header"] = $this->tm->get($no_transaksi);
@@ -46,8 +47,8 @@ class Laporan extends JI_Controller
     {
         $data = $this->__init();
 
-        if (!$this->user_login) {
-            redir(base_url());
+        if (!$this->admin_login) {
+            redir(base_url_admin());
         }
 
         $data["from"] = $from;

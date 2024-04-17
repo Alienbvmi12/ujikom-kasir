@@ -27,7 +27,7 @@
                         <tr>
                             <td>Kasir</td>
                             <td> : </td>
-                            <td><?= $transaksi_header->user_id ?? $transaksi_header->admin_id . "A" ?> - <?= $transaksi_header->user_nama ?? $transaksi_header->admin_nama ?></td>
+                            <td><?= $transaksi_header->user_id ?? $transaksi_header->admin_id . "A"  ?> - <?= $transaksi_header->user_nama ?? $transaksi_header->admin_nama ?></td>
                         </tr>
                         <tr>
                             <td>Member</td>
